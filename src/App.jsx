@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Home from './pages/Home';
 import Search from './pages/Search';
 import Compare from './pages/Compare';
 import AIAdvisor from './pages/AIAdvisor';
@@ -13,9 +14,8 @@ function App() {
 
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<Search />} />
-            <Route path="/compare" element={<Compare />} />
-            <Route path="/ai-advisor" element={<AIAdvisor />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>

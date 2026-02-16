@@ -4,7 +4,8 @@ function Navbar() {
     const location = useLocation();
 
     const navItems = [
-        { path: '/', label: 'Search' },
+        { path: '/', label: 'Home' },
+        { path: '/search', label: 'Search' },
         { path: '/compare', label: 'Compare' },
         { path: '/ai-advisor', label: 'AI Advisor' },
         { path: '/about', label: 'About' }
