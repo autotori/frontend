@@ -9,18 +9,20 @@ import About from './pages/About';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
 
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/ai-advisor" element={<AIAdvisor />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
 
-        <footer className="bg-white border-t mt-12">
+        <footer className="bg-white border-t">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-500">
             <p>Aggregating from Saka, Autokeskus, and Kamux</p>
             <p className="mt-1 text-xs">

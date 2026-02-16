@@ -70,63 +70,70 @@ function Search() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Search Cars</h2>
-                <p className="text-gray-600">Find your perfect car from multiple sources across Finland</p>
-            </div>
-
-            <SearchBar
-                onSearch={handleSearch}
-                initialQuery={query}
-            />
-
-            <Filters
-                filters={filters}
-                onChange={handleFilterChange}
-            />
-
-            {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-                    <p className="font-medium">Error: {error}</p>
+        <div className="bg-gray-50 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="mb-6">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Search Cars</h2>
+                    <p className="text-gray-600">Find your perfect car from multiple sources across Finland</p>
                 </div>
-            )}
 
-            {loading && (
-                <div className="text-center py-12">
-                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-                    <p className="mt-4 text-gray-600">Searching...</p>
-                </div>
-            )}
+                <SearchBar
+                    onSearch={handleSearch}
+                    initialQuery={query}
+                />
 
-            {!loading && results && (
-                <>
-                    <div className="mb-4 text-sm text-gray-600">
-                        Found {results.total || 0} results
-                        {results.query && ` for "${results.query}"`}
-                        <span className="ml-2 text-xs text-gray-400">
-                            (Page {results.page || 1} of {results.totalPages || 1})
-                        </span>
+                <Filters
+                    filters={filters}
+                    onChange={handleFilterChange}
+                />
+
+                {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                        <p className="font-medium">Error: {error}</p>
                     </div>
+                )}
 
-                    <CarGrid listings={results.items || []} />
+                {loading && (
+                    <div className="text-center py-12">
+                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <p className="mt-4 text-gray-600">Searching...</p>
+                    </div>
+                )}
 
-                    {results.totalPages > 1 && (
-                        <Pagination
-                            currentPage={results.page || 1}
-                            totalPages={results.totalPages || 1}
-                            onPageChange={handlePageChange}
-                        />
-                    )}
-                </>
-            )}
+                {!loading && results && (
+                    <>
+                        <div className="mb-6 flex items-center justify-between">
+                            <div className="text-sm text-gray-600">
+                                Found <span className="font-semibold text-gray-900">{results.total || 0}</span> results
+                                {results.query && ` for "${results.query}"`}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                                Page {results.page || 1} of {results.totalPages || 1}
+                            </div>
+                        </div>
 
-            {!loading && results && results.items?.length === 0 && (
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <p className="text-gray-500 text-lg">No cars found matching your criteria</p>
-                    <p className="text-gray-400 text-sm mt-2">Try adjusting your filters</p>
-                </div>
-            )}
+                        <CarGrid listings={results.items || []} />
+
+                        {results.totalPages > 1 && (
+                            <Pagination
+                                currentPage={results.page || 1}
+                                totalPages={results.totalPages || 1}
+                                onPageChange={handlePageChange}
+                            />
+                        )}
+                    </>
+                )}
+
+                {!loading && results && results.items?.length === 0 && (
+                    <div className="text-center py-16 bg-white rounded-xl shadow-md">
+                        <svg className="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p className="text-gray-500 text-xl font-semibold mb-2">No cars found</p>
+                        <p className="text-gray-400 text-sm">Try adjusting your search criteria or filters</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

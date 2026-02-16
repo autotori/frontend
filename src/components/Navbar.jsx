@@ -19,12 +19,12 @@ function Navbar() {
     };
 
     return (
-        <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
+        <nav className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-gray-900">Autotori</span>
+                    <Link to="/" className="flex items-center">
+                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Autotori</span>
                     </Link>
 
                     {/* Navigation Links */}
