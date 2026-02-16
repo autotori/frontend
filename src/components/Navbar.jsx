@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 
 function Navbar() {
     const location = useLocation();
@@ -24,7 +25,7 @@ function Navbar() {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Autotori</span>
+                        <img src={logo} alt="Autotori" className="h-10 w-auto" />
                     </Link>
 
                     {/* Navigation Links */}
