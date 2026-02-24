@@ -1,126 +1,377 @@
-import { useState } from 'react';
+import { useMemo, useState } from "react";
+
+const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
+
+function formatEur(n) {
+  if (n == null || !Number.isFinite(Number(n))) return "—";
+  return new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR" }).format(Number(n));
+}
+
+function formatKm(n) {
+  if (n == null || !Number.isFinite(Number(n))) return "—";
+  return new Intl.NumberFormat("fi-FI").format(Number(n)) + " km";
+}
+
+function titleCaseWord(w) {
+  if (!w) return "";
+  return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+}
+
+function extractBudgetEur(text) {
+  const m = text
+    .replace(/\s/g, "")
+    .match(/(?:€|eur)?(\d{2,3}(?:[.,]\d{3})+|\d{4,6})(?:€|eur)?/i);
+  if (!m) return null;
+
+  const raw = m[1].replace(/\./g, "").replace(/,/g, "");
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
+function guessTransmission(text) {
+  const t = text.toLowerCase();
+  if (t.includes("auto") || t.includes("automatic") || t.includes("automaatti")) return "Automaatti";
+  if (t.includes("manual") || t.includes("manuaali")) return "Manuaali";
+  return null;
+}
+
+function guessFuel(text) {
+  const t = text.toLowerCase();
+  if (t.includes("electric") || t.includes("ev") || t.includes("sähkö")) return "Sähkö";
+  if (t.includes("hybrid") || t.includes("hybridi")) return "Hybrid";
+  if (t.includes("diesel") || t.includes("d") || t.includes("diesel")) return "Diesel";
+  if (t.includes("petrol") || t.includes("bensiini") || t.includes("gasoline")) return "Bensiini";
+  return null;
+}
+
+function buildFiltersFromText(text) {
+  const maxPrice = extractBudgetEur(text);
+  const transmission = guessTransmission(text);
+  const fuel = guessFuel(text);
+
+  const filters = { source: "all" };
+  if (maxPrice != null) filters.maxPrice = maxPrice;
+  if (transmission) filters.transmission = transmission;
+  if (fuel) filters.fuel = fuel;
+
+  return filters;
+}
+
+function Card({ children }) {
+  return <div className="bg-white rounded-xl shadow-md p-6">{children}</div>;
+}
+
+function ListingCard({ listing, highlight }) {
+  const title = listing?.title || `${listing?.make || ""} ${listing?.model || ""}`.trim() || "Listing";
+  const href = listing?.listingUrl || "#";
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`block rounded-xl border bg-white hover:shadow-md transition ${
+        highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
+      }`}
+    >
+      <div className="flex gap-4 p-4">
+        <div className="w-28 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+          {listing?.thumbnailUrl ? (
+            <img src={listing.thumbnailUrl} alt={title} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-xs text-gray-400">No image</span>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-3">
+            <h4 className="font-semibold text-gray-900 truncate">{title}</h4>
+            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 shrink-0">
+              {String(listing?.source || "").toUpperCase()}
+            </span>
+          </div>
+
+          <div className="mt-2 text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
+            <span>{listing?.year ?? "—"}</span>
+            <span>{formatEur(listing?.priceEur)}</span>
+            <span>{formatKm(listing?.mileageKm)}</span>
+            <span>{listing?.fuel ?? "—"}</span>
+            <span>{listing?.transmission ?? "—"}</span>
+            <span>{listing?.location ?? "—"}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function PicksPanel({ data }) {
+  const picks = data?.picks || [];
+  const summary = data?.summary || "";
+
+  return (
+    <div className="mt-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="font-semibold text-gray-900">Recommendations</h3>
+        {summary ? <p className="text-sm text-gray-700 mt-2">{summary}</p> : null}
+
+        {picks.length === 0 ? (
+          <p className="text-sm text-gray-500 mt-3">No picks returned.</p>
+        ) : (
+          <div className="mt-4 space-y-4">
+            {picks.map((p, i) => {
+              const listing = p?.listing || {};
+              return (
+                <div key={p.listingUrl || i} className="rounded-xl border border-gray-200 overflow-hidden">
+                  <div className="p-4 bg-gray-50 border-b border-gray-200">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="font-semibold text-gray-900">
+                        #{i + 1} {p.title}
+                      </div>
+                      <div className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700">
+                        Score: {Number(p.score ?? 0).toFixed(1)}/10
+                      </div>
+                    </div>
+                    <div className="mt-2 text-sm text-gray-700">
+                      <div>
+                        <span className="font-semibold">Why:</span> {p.why}
+                      </div>
+                      <div className="mt-1">
+                        <span className="font-semibold">Tradeoffs:</span> {p.tradeoffs}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4">
+                    <ListingCard listing={listing} highlight />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function AIAdvisor() {
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [aiResult, setAiResult] = useState(null);
+  const [error, setError] = useState("");
 
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        if (!input.trim()) return;
+  const lastUserNeed = useMemo(() => {
+    const last = [...messages].reverse().find((m) => m.role === "user");
+    return last?.content || "";
+  }, [messages]);
 
-        // Add user message
-        setMessages([...messages, { role: 'user', content: input }]);
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    const text = input.trim();
+    if (!text || loading) return;
 
-        // Simulate AI response (will be replaced with actual AI integration)
-        setTimeout(() => {
-            setMessages(prev => [...prev, {
-                role: 'assistant',
-                content: 'AI car recommendations will be available soon! I will help you find the perfect car based on your budget, family size, fuel preferences, and driving habits.'
-            }]);
-        }, 500);
+    setError("");
+    setAiResult(null);
 
-        setInput('');
-    };
+    // Add user message immediately
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
+    setInput("");
+    setLoading(true);
 
-    return (
-        <div className="bg-gray-50 min-h-screen">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
-                    <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
-                </div>
+    try {
+      const filters = buildFiltersFromText(text);
 
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
-                        <p className="text-sm text-gray-600">
-                            Get recommendations based on your budget and total cost of ownership
-                        </p>
-                    </div>
+      // Choose a reasonable search query:
+      // - If user writes "BMW under 25k", q="BMW"
+      const words = text.split(/\s+/).filter(Boolean);
+      const firstWord = words[0] || "";
+      const q = firstWord.length <= 20 ? titleCaseWord(firstWord) : "";
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h3 className="font-semibold text-gray-900 mb-2">Family Needs</h3>
-                        <p className="text-sm text-gray-600">
-                            Find cars that match your family size and lifestyle requirements
-                        </p>
-                    </div>
+      const res = await fetch(`${API_BASE}/api/ai/recommendations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          need: text,
+          q,
+          filters,
+          preferences: {}, 
+          maxPicks: 5
+        })
+      });
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h3 className="font-semibold text-gray-900 mb-2">Fuel Efficiency</h3>
-                        <p className="text-sm text-gray-600">
-                            Compare fuel types and running costs for your driving habits
-                        </p>
-                    </div>
-                </div>
+      const json = await res.json();
 
-                <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-                        <h3 className="text-white font-semibold">
-                            Chat with AI Advisor
-                        </h3>
-                    </div>
+      if (!res.ok) {
+        const msg = json?.error || `Request failed (${res.status})`;
+        throw new Error(msg);
+      }
 
-                    <div className="h-96 overflow-y-auto p-6 bg-gray-50">
-                        {messages.length === 0 ? (
-                            <div className="text-center text-gray-500 mt-12">
-                                <p className="mb-4">Start a conversation to get personalized car recommendations!</p>
-                                <div className="text-sm text-gray-400 space-y-2">
-                                    <p>Try asking:</p>
-                                    <p>"I need a family car under €25,000"</p>
-                                    <p>"What's the best fuel-efficient car for daily commuting?"</p>
-                                    <p>"Compare maintenance costs for hybrid vs diesel"</p>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {messages.map((msg, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                                    >
-                                        <div
-                                            className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === 'user'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'bg-white border border-gray-200 text-gray-900'
-                                                }`}
-                                        >
-                                            {msg.content}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+      // json shape (from the backend code I gave you):
+      // { ok: true, data: { summary, picks:[{... , listing: {...}}] }, sourceErrors, meta }
+      const data = json?.data || null;
+      setAiResult(data);
 
-                    <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                placeholder="Ask about car recommendations..."
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button
-                                type="submit"
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
-                            >
-                                Send
-                            </button>
-                        </div>
-                    </form>
-                </div>
+      // Add assistant summary into chat
+      const assistantText =
+        data?.summary ||
+        (Array.isArray(data?.picks) && data.picks.length
+          ? `I found ${data.picks.length} good options. Scroll down to see details.`
+          : "I couldn't find good matches from current listings. Try relaxing budget/year/mileage.");
 
-                <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <p className="text-sm text-yellow-800">
-                        <span className="font-semibold">Note:</span> AI recommendations are currently in development.
-                        The advisor will use advanced AI to analyze your requirements and suggest the best cars based on
-                        budget, family size, fuel efficiency, and maintenance costs.
-                    </p>
-                </div>
-            </div>
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
+    } catch (err) {
+      setError(err?.message || "Something went wrong");
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "Sorry, I couldn't generate recommendations right now. Please try again in a minute."
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
+          <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
         </div>
-    );
+
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
+            <p className="text-sm text-gray-600">
+              Get recommendations based on your budget and total cost of ownership
+            </p>
+          </Card>
+
+          <Card>
+            <h3 className="font-semibold text-gray-900 mb-2">Family Needs</h3>
+            <p className="text-sm text-gray-600">
+              Find cars that match your family size and lifestyle requirements
+            </p>
+          </Card>
+
+          <Card>
+            <h3 className="font-semibold text-gray-900 mb-2">Fuel Efficiency</h3>
+            <p className="text-sm text-gray-600">
+              Compare fuel types and running costs for your driving habits
+            </p>
+          </Card>
+        </div>
+        <div className="grid gap-6 mb-8 max-w-7xl mx-auto">
+          <Card>
+            <h3 className="font-semibold text-gray-900 mb-2">Searching on AI</h3>
+            <p className="text-sm text-gray-600">
+                <p>Try asking:</p>
+                  <p>"Try entering the single string such as:"</p>
+                  <p>"Price, Company name, Transmission, fuel"</p>
+                  <p>OR</p>
+                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>            </p>
+          </Card>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+            <h3 className="text-white font-semibold">Chat with AI Advisor</h3>
+          </div>
+
+          <div className="h-96 overflow-y-auto p-6 bg-gray-50">
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 mt-12">
+                <p className="mb-4">Start a conversation to get personalized car recommendations!</p>
+                <div className="text-sm text-gray-400 space-y-2">
+                  <p>Try asking:</p>
+                  <p>"Try entering the single string such as:"</p>
+                  <p>"Price, Company name, Transmission, fuel"</p>
+                  <p>OR</p>
+                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        msg.role === "user"
+                          ? "bg-blue-500 text-white"
+                          : "bg-white border border-gray-200 text-gray-900"
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                  </div>
+                ))}
+
+                {loading ? (
+                  <div className="flex justify-start">
+                    <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-900">
+                      Thinking…
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
+
+          <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask about car recommendations..."
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loading}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className={`px-6 py-2 rounded-lg transition-colors font-medium ${
+                  loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {error ? (
+          <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-sm text-red-800">
+              <span className="font-semibold">Error:</span> {error}
+            </p>
+          </div>
+        ) : null}
+
+        {aiResult ? <PicksPanel data={aiResult} /> : null}
+
+        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <p className="text-sm text-yellow-800">
+            <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
+            If listings are missing key details (e.g. service history), the advisor will mention limitations.
+          </p>
+          {lastUserNeed ? (
+            <p className="text-xs text-yellow-700 mt-2">
+              Last need: <span className="font-mono">{lastUserNeed}</span>
+            </p>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default AIAdvisor;
