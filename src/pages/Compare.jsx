@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import AdPlaceholder from '../components/AdPlaceholder';
 
 function Compare() {
     const [selectedCars, setSelectedCars] = useState([]);
 
     return (
         <div className="bg-gray-50 min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Top Banner Ad */}
+            <div className="bg-gray-100 py-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <AdPlaceholder size="banner" variant="green" />
+                </div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-gray-900 mb-2">Compare Cars</h2>
                     <p className="text-gray-600">Select up to 4 cars to compare side by side</p>

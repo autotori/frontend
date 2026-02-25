@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import AdPlaceholder from '../components/AdPlaceholder';
 
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
 
@@ -70,9 +71,8 @@ function ListingCard({ listing, highlight }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`block rounded-xl border bg-white hover:shadow-md transition ${
-        highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
-      }`}
+      className={`block rounded-xl border bg-white hover:shadow-md transition ${highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
+        }`}
     >
       <div className="flex gap-4 p-4">
         <div className="w-28 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
@@ -196,7 +196,7 @@ function AIAdvisor() {
           need: text,
           q,
           filters,
-          preferences: {}, 
+          preferences: {},
           maxPicks: 5
         })
       });
@@ -238,136 +238,137 @@ function AIAdvisor() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
+      {/* Top Banner Ad */}
+      <div className="bg-gray-100 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AdPlaceholder size="banner" variant="purple" />
+        </div>
+      </div>
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
-          <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
-            <p className="text-sm text-gray-600">
-              Get recommendations based on your budget and total cost of ownership
-            </p>
-          </Card>
-
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Family Needs</h3>
-            <p className="text-sm text-gray-600">
-              Find cars that match your family size and lifestyle requirements
-            </p>
-          </Card>
-
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Fuel Efficiency</h3>
-            <p className="text-sm text-gray-600">
-              Compare fuel types and running costs for your driving habits
-            </p>
-          </Card>
-        </div>
-        <div className="grid gap-6 mb-8 max-w-7xl mx-auto">
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Searching on AI</h3>
-            <p className="text-sm text-gray-600">
-                <p>Try asking:</p>
-                  <p>"Try entering the single string such as:"</p>
-                  <p>"Price, Company name, Transmission, fuel"</p>
-                  <p>OR</p>
-                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>            </p>
-          </Card>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-            <h3 className="text-white font-semibold">Chat with AI Advisor</h3>
-          </div>
-
-          <div className="h-96 overflow-y-auto p-6 bg-gray-50">
-            {messages.length === 0 ? (
-              <div className="text-center text-gray-500 mt-12">
-                <p className="mb-4">Start a conversation to get personalized car recommendations!</p>
-                <div className="text-sm text-gray-400 space-y-2">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
+              <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <Card>
+                <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
+                <p className="text-sm text-gray-600">
+                  Get recommendations based on your budget and total cost of ownership
+                </p>
+              </Card>
+              <Card>
+                <h3 className="font-semibold text-gray-900 mb-2">Family Needs</h3>
+                <p className="text-sm text-gray-600">
+                  Find cars that match your family size and lifestyle requirements
+                </p>
+              </Card>
+              <Card>
+                <h3 className="font-semibold text-gray-900 mb-2">Fuel Efficiency</h3>
+                <p className="text-sm text-gray-600">
+                  Compare fuel types and running costs for your driving habits
+                </p>
+              </Card>
+            </div>
+            <div className="grid gap-6 mb-8 max-w-7xl mx-auto">
+              <Card>
+                <h3 className="font-semibold text-gray-900 mb-2">Searching on AI</h3>
+                <p className="text-sm text-gray-600">
                   <p>Try asking:</p>
                   <p>"Try entering the single string such as:"</p>
                   <p>"Price, Company name, Transmission, fuel"</p>
                   <p>OR</p>
-                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        msg.role === "user"
-                          ? "bg-blue-500 text-white"
-                          : "bg-white border border-gray-200 text-gray-900"
-                      }`}
-                    >
-                      {msg.content}
-                    </div>
-                  </div>
-                ))}
-
-                {loading ? (
-                  <div className="flex justify-start">
-                    <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-900">
-                      Thinking…
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </div>
-
-          <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about car recommendations..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={loading}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className={`px-6 py-2 rounded-lg transition-colors font-medium ${
-                  loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                Send
-              </button>
+                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>            </p>
+              </Card>
             </div>
-          </form>
-        </div>
-
-        {error ? (
-          <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-sm text-red-800">
-              <span className="font-semibold">Error:</span> {error}
-            </p>
+            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                <h3 className="text-white font-semibold">Chat with AI Advisor</h3>
+              </div>
+              <div className="h-96 overflow-y-auto p-6 bg-gray-50">
+                {messages.length === 0 ? (
+                  <div className="text-center text-gray-500 mt-12">
+                    <p className="mb-4">Start a conversation to get personalized car recommendations!</p>
+                    <div className="text-sm text-gray-400 space-y-2">
+                      <p>Try asking:</p>
+                      <p>"Try entering the single string such as:"</p>
+                      <p>"Price, Company name, Transmission, fuel"</p>
+                      <p>OR</p>
+                      <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {messages.map((msg, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                      >
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === "user"
+                            ? "bg-blue-500 text-white"
+                            : "bg-white border border-gray-200 text-gray-900"
+                            }`}
+                        >
+                          {msg.content}
+                        </div>
+                      </div>
+                    ))}
+                    {loading ? (
+                      <div className="flex justify-start">
+                        <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-900">
+                          Thinking…
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+              <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Ask about car recommendations..."
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={loading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`px-6 py-2 rounded-lg transition-colors font-medium ${loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                      }`}
+                  >
+                    Send
+                  </button>
+                </div>
+              </form>
+            </div>
+            {error ? (
+              <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-sm text-red-800">
+                  <span className="font-semibold">Error:</span> {error}
+                </p>
+              </div>
+            ) : null}
+            {aiResult ? <PicksPanel data={aiResult} /> : null}
+            <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p className="text-sm text-yellow-800">
+                <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
+                If listings are missing key details (e.g. service history), the advisor will mention limitations.
+              </p>
+              {lastUserNeed ? (
+                <p className="text-xs text-yellow-700 mt-2">
+                  Last need: <span className="font-mono">{lastUserNeed}</span>
+                </p>
+              ) : null}
+            </div>
           </div>
-        ) : null}
-
-        {aiResult ? <PicksPanel data={aiResult} /> : null}
-
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <p className="text-sm text-yellow-800">
-            <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
-            If listings are missing key details (e.g. service history), the advisor will mention limitations.
-          </p>
-          {lastUserNeed ? (
-            <p className="text-xs text-yellow-700 mt-2">
-              Last need: <span className="font-mono">{lastUserNeed}</span>
-            </p>
-          ) : null}
+          {/* Side Ad removed as per user request */}
         </div>
       </div>
     </div>

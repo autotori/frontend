@@ -1,61 +1,76 @@
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
+import AdPlaceholder from '../components/AdPlaceholder';
 import { searchCars } from '../api';
 
 // Car Section Component
 const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources, loading }) => (
     <div className="mb-20">
-        <div className="flex items-center justify-between mb-8">
-            <div>
-                <h3 className="text-4xl font-bold text-gray-900 mb-3">{title}</h3>
-                <p className="text-lg text-gray-600">{description}</p>
+        <div className="mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div className="flex items-center gap-3 flex-wrap">
+                    <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{title}</h3>
+                    <Link to={link} className="inline-flex items-center px-3 py-1 rounded-full bg-white hover:bg-gray-100 text-blue-600 font-medium text-sm border border-blue-100 shadow transition-all">
+                        Katso lisää
+                    </Link>
+                </div>
+                <div className="flex items-center gap-2 mt-2 md:mt-0">
+                    <button
+                        onClick={() => scroll(scrollRef, 'left')}
+                        className="bg-white shadow-lg hover:bg-gray-100 border border-gray-200 w-10 h-10 flex items-center justify-center rounded-full transition-all"
+                        aria-label="Scroll left"
+                    >
+                        <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button
+                        onClick={() => scroll(scrollRef, 'right')}
+                        className="bg-white shadow-lg hover:bg-gray-100 border border-gray-200 w-10 h-10 flex items-center justify-center rounded-full transition-all"
+                        aria-label="Scroll right"
+                    >
+                        <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <Link to={link} className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-lg group">
-                <span>View All</span>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </Link>
+            {description && (
+                <div className="mt-2">
+                    <span className="text-base text-gray-500 font-normal">{description}</span>
+                </div>
+            )}
         </div>
-        <div className="flex items-center gap-4">
-            <button
-                onClick={() => scroll(scrollRef, 'left')}
-                className="flex-shrink-0 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
-                aria-label="Scroll left"
-            >
-                <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-
-            <div ref={scrollRef} className="flex-1 flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory scroll-smooth scroll-pl-0">
+        <div className="bg-gray-100 rounded-3xl px-6 pt-6 pb-2">
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory scroll-smooth scroll-pl-0">
                 {loading ? (
                     <div className="flex-1 flex items-center justify-center py-20">
                         <div className="text-gray-400">Loading cars...</div>
                     </div>
                 ) : cars.length > 0 ? (
-                    cars.map((car, idx) => (
-                        <div key={idx} className="flex-none w-80 snap-start">
-                            <CarCard car={car} source={car.source} />
-                        </div>
-                    ))
+                    cars.map((car, idx) => {
+                        // Show ad every 4th position
+                        const showAd = (idx + 1) % 4 === 0;
+                        return (
+                            <>
+                                <div key={idx} className="flex-none w-80 snap-start">
+                                    <CarCard car={car} source={car.source} />
+                                </div>
+                                {showAd && idx < cars.length - 1 && (
+                                    <div key={`ad-${idx}`} className="flex-none w-80 snap-start">
+                                        <AdPlaceholder size="card" variant="blue" />
+                                    </div>
+                                )}
+                            </>
+                        );
+                    })
                 ) : (
                     <div className="flex-1 flex items-center justify-center py-20">
                         <div className="text-gray-400">No cars available</div>
                     </div>
                 )}
             </div>
-
-            <button
-                onClick={() => scroll(scrollRef, 'right')}
-                className="flex-shrink-0 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
-                aria-label="Scroll right"
-            >
-                <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
         </div>
     </div>
 );
@@ -106,6 +121,7 @@ function Home() {
         }
     };
 
+
     return (
         <div className="relative">
             {/* Hero Section */}
@@ -148,7 +164,7 @@ function Home() {
                 </div>
             </div>
 
-            {/* Features Section */}
+            {/* Features Section (no ads here) */}
             <div className="bg-gradient-to-b from-white via-gray-50 to-white py-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-20">
@@ -159,7 +175,6 @@ function Home() {
                             Experience the most comprehensive and intelligent car search platform in Finland
                         </p>
                     </div>
-
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Multiple Sources Card */}
                         <div className="group relative bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:-translate-y-2">
@@ -296,45 +311,54 @@ function Home() {
                 </div>
             </div>
 
-            {/* Car Showcase Section */}
+            {/* Car Feed Section with Ads */}
             <div className="bg-gray-50 py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <CarSection
-                        title="Electric Cars"
-                        description="Eco-friendly and efficient vehicles for the future"
-                        link="/search?fuel=electric"
-                        scrollRef={electricScrollRef}
-                        scroll={scroll}
-                        cars={electricCars}
-                        loading={loading}
-                    />
-                    <CarSection
-                        title="Hybrid Cars"
-                        description="Best of both worlds - efficiency meets performance"
-                        link="/search?fuel=hybrid"
-                        scrollRef={hybridScrollRef}
-                        scroll={scroll}
-                        cars={hybridCars}
-                        loading={loading}
-                    />
-                    <CarSection
-                        title="Family Cars"
-                        description="Spacious, comfortable, and perfect for adventures"
-                        link="/search"
-                        scrollRef={familyScrollRef}
-                        scroll={scroll}
-                        cars={familyCars}
-                        loading={loading}
-                    />
-                    <CarSection
-                        title="Sport Cars"
-                        description="Unleash the power - performance and style combined"
-                        link="/search"
-                        scrollRef={sportScrollRef}
-                        scroll={scroll}
-                        cars={sportCars}
-                        loading={loading}
-                    />
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* Main Feed */}
+                        <div className="flex-1 min-w-0">
+                            <CarSection
+                                title="Electric Cars"
+                                description="Eco-friendly and efficient vehicles for the future"
+                                link="/search?fuel=electric"
+                                scrollRef={electricScrollRef}
+                                scroll={scroll}
+                                cars={electricCars}
+                                loading={loading}
+                            />
+                            <CarSection
+                                title="Hybrid Cars"
+                                description="Best of both worlds - efficiency meets performance"
+                                link="/search?fuel=hybrid"
+                                scrollRef={hybridScrollRef}
+                                scroll={scroll}
+                                cars={hybridCars}
+                                loading={loading}
+                            />
+                            <CarSection
+                                title="Family Cars"
+                                description="Spacious, comfortable, and perfect for adventures"
+                                link="/search"
+                                scrollRef={familyScrollRef}
+                                scroll={scroll}
+                                cars={familyCars}
+                                loading={loading}
+                            />
+                            <CarSection
+                                title="Sport Cars"
+                                description="Unleash the power - performance and style combined"
+                                link="/search"
+                                scrollRef={sportScrollRef}
+                                scroll={scroll}
+                                cars={sportCars}
+                                loading={loading}
+                            />
+                        </div>
+                    </div>
+                    {/* Bottom Ad */}
+                    <div className="mt-16 flex justify-center">
+                        <AdPlaceholder size="banner" variant="green" />
+                    </div>
                 </div>
             </div>
 
