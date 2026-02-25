@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
 import { searchCars } from '../api';
+import wasalaCar from '../../assets/wasala_car.png';
 
 // Car Section Component
 const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources, loading }) => (
@@ -114,7 +115,7 @@ function Home() {
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                     style={{
-                        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070')",
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${wasalaCar})`,
                     }}
                 />
 
@@ -129,7 +130,7 @@ function Home() {
 
                     <Link
                         to="/search"
-                        className="group relative inline-flex items-center justify-center px-12 py-5 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
+                        className="group relative inline-flex items-center justify-center px-12 py-5 text-lg font-semibold text-blue-700 bg-gradient-to-r from-white via-blue-100 to-blue-200 rounded-full hover:from-blue-100 hover:to-blue-300 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border border-blue-200"
                     >
                         <span>Explore</span>
                     </Link>
