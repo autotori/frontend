@@ -20,7 +20,7 @@ function titleCaseWord(w) {
 function extractBudgetEur(text) {
   const m = text
     .replace(/\s/g, "")
-    .match(/(?:€|eur)?(\d{2,3}(?:[.,]\d{3})+|\d{4,6})(?:€|eur)?/i);
+    .match(/(?:€|eur|euro|euros)?(\d{2,3}(?:[.,]\d{3})+|\d{4,6})(?:€|eur|euro|euros)?/i);
   if (!m) return null;
 
   const raw = m[1].replace(/\./g, "").replace(/,/g, "");
@@ -39,8 +39,31 @@ function guessFuel(text) {
   const t = text.toLowerCase();
   if (t.includes("electric") || t.includes("ev") || t.includes("sähkö")) return "Sähkö";
   if (t.includes("hybrid") || t.includes("hybridi")) return "Hybrid";
-  if (t.includes("diesel") || t.includes("d") || t.includes("diesel")) return "Diesel";
+  if (t.includes("diesel")) return "Diesel";
   if (t.includes("petrol") || t.includes("bensiini") || t.includes("gasoline")) return "Bensiini";
+  return null;
+}
+
+// Common car makes to look for in text
+const CAR_MAKES = [
+  "toyota", "volkswagen", "vw", "bmw", "mercedes", "audi", "volvo", 
+  "ford", "honda", "nissan", "mazda", "skoda", "kia", "hyundai",
+  "peugeot", "renault", "citroen", "seat", "opel", "tesla", "lexus",
+  "porsche", "land rover", "range rover", "jaguar", "mini", "fiat",
+  "alfa romeo", "jeep", "subaru", "mitsubishi", "suzuki", "dacia"
+];
+
+function extractCarMake(text) {
+  const lower = text.toLowerCase();
+  
+  // Look for any known car make in the text
+  for (const make of CAR_MAKES) {
+    if (lower.includes(make)) {
+      // Return title-cased version
+      return make.split(' ').map(w => titleCaseWord(w)).join(' ');
+    }
+  }
+  
   return null;
 }
 
@@ -48,13 +71,41 @@ function buildFiltersFromText(text) {
   const maxPrice = extractBudgetEur(text);
   const transmission = guessTransmission(text);
   const fuel = guessFuel(text);
+  const make = extractCarMake(text);
 
   const filters = { source: "all" };
   if (maxPrice != null) filters.maxPrice = maxPrice;
   if (transmission) filters.transmission = transmission;
   if (fuel) filters.fuel = fuel;
+  if (make) filters.make = make;
 
   return filters;
+}
+
+function extractSearchQuery(text) {
+  // First, try to find a car make
+  const make = extractCarMake(text);
+  if (make) return make;
+  
+  // Otherwise, look for meaningful keywords
+  const lower = text.toLowerCase();
+  const keywords = [];
+  
+  // Look for size/type keywords
+  if (lower.includes("suv")) keywords.push("SUV");
+  if (lower.includes("sedan")) keywords.push("sedan");
+  if (lower.includes("wagon") || lower.includes("estate")) keywords.push("wagon");
+  if (lower.includes("hatchback")) keywords.push("hatchback");
+  if (lower.includes("van") || lower.includes("family")) keywords.push("van");
+  if (lower.includes("sport")) keywords.push("sport");
+  if (lower.includes("compact")) keywords.push("compact");
+  if (lower.includes("luxury")) keywords.push("luxury");
+  
+  // If we found type keywords, return them
+  if (keywords.length > 0) return keywords.join(" ");
+  
+  // As a last resort, return empty string to search all
+  return "";
 }
 
 function Card({ children }) {
@@ -182,12 +233,9 @@ function AIAdvisor() {
 
     try {
       const filters = buildFiltersFromText(text);
+      const q = extractSearchQuery(text);
 
-      // Choose a reasonable search query:
-      // - If user writes "BMW under 25k", q="BMW"
-      const words = text.split(/\s+/).filter(Boolean);
-      const firstWord = words[0] || "";
-      const q = firstWord.length <= 20 ? titleCaseWord(firstWord) : "";
+      console.log("Sending to backend:", { need: text, q, filters });
 
       const res = await fetch(`${API_BASE}/api/ai/recommendations`, {
         method: "POST",
@@ -208,8 +256,6 @@ function AIAdvisor() {
         throw new Error(msg);
       }
 
-      // json shape (from the backend code I gave you):
-      // { ok: true, data: { summary, picks:[{... , listing: {...}}] }, sourceErrors, meta }
       const data = json?.data || null;
       setAiResult(data);
 
@@ -218,7 +264,7 @@ function AIAdvisor() {
         data?.summary ||
         (Array.isArray(data?.picks) && data.picks.length
           ? `I found ${data.picks.length} good options. Scroll down to see details.`
-          : "I couldn't find good matches from current listings. Try relaxing budget/year/mileage.");
+          : "I couldn't find good matches from current listings. Try being more specific or relaxing your requirements.");
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
     } catch (err) {
@@ -266,16 +312,20 @@ function AIAdvisor() {
             </p>
           </Card>
         </div>
-        <div className="grid gap-6 mb-8 max-w-7xl mx-auto">
-          <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Searching on AI</h3>
-            <p className="text-sm text-gray-600">
-                <p>Try asking:</p>
-                  <p>"Try entering the single string such as:"</p>
-                  <p>"Price, Company name, Transmission, fuel"</p>
-                  <p>OR</p>
-                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>            </p>
-          </Card>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+          <h3 className="font-semibold text-blue-900 mb-2">💡 How to use</h3>
+          <div className="text-sm text-blue-800 space-y-1">
+            <p><strong>Natural language examples:</strong></p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li>"I need a family car under 30000 euros"</li>
+              <li>"Show me BMW automatic transmission cars"</li>
+              <li>"Looking for a reliable Toyota hybrid"</li>
+              <li>"Need a diesel SUV under 40000"</li>
+              <li>"Recommend an electric car for city driving"</li>
+              <li>"Want a luxury sedan with low mileage"</li>
+            </ul>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -286,13 +336,12 @@ function AIAdvisor() {
           <div className="h-96 overflow-y-auto p-6 bg-gray-50">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 mt-12">
-                <p className="mb-4">Start a conversation to get personalized car recommendations!</p>
+                <p className="mb-4 text-lg">Start a conversation to get personalized car recommendations!</p>
                 <div className="text-sm text-gray-400 space-y-2">
-                  <p>Try asking:</p>
-                  <p>"Try entering the single string such as:"</p>
-                  <p>"Price, Company name, Transmission, fuel"</p>
-                  <p>OR</p>
-                  <p>Strings such as bmw under 40000, bmw petrol, toyota automatic</p>
+                  <p><strong>Try asking:</strong></p>
+                  <p>"I need a family car under 30000 euros"</p>
+                  <p>"Show me automatic BMWs"</p>
+                  <p>"Looking for a hybrid Toyota"</p>
                 </div>
               </div>
             ) : (
@@ -331,7 +380,7 @@ function AIAdvisor() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about car recommendations..."
+                placeholder="Ask about car recommendations... (e.g., 'I need a family car under 30000')"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={loading}
               />
