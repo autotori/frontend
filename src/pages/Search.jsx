@@ -30,7 +30,7 @@ function Search() {
 
     useEffect(() => {
         performSearch();
-    }, [page, filters]);
+    }, [page, filters, query]);
 
     const performSearch = async () => {
         setLoading(true);
@@ -56,7 +56,7 @@ function Search() {
     const handleSearch = (newQuery) => {
         setQuery(newQuery);
         setPage(1);
-        performSearch();
+        // actual search will run via useEffect when `query` changes
     };
 
     const handleFilterChange = (newFilters) => {
