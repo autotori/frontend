@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
-import AdPlaceholder from '../components/AdPlaceholder';
+
 import { searchCars } from '../api';
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1769113528181-1ec33345ba3d?w=1920&q=80&auto=format&fit=crop';
@@ -345,10 +345,7 @@ function Home() {
                             />
                         </div>
                     </div>
-                    {/* Bottom Ad */}
-                    <div className="mt-16 flex justify-center">
-                        <AdPlaceholder size="banner" variant="green" />
-                    </div>
+
                 </div>
             </div>
 

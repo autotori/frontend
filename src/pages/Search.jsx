@@ -4,7 +4,7 @@ import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
 import CarGrid from '../components/CarGrid';
 import Pagination from '../components/Pagination';
-import AdPlaceholder from '../components/AdPlaceholder';
+
 
 function Search() {
     const [query, setQuery] = useState('');
