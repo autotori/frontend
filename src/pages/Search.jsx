@@ -5,6 +5,7 @@ import Filters from '../components/Filters';
 import CarGrid from '../components/CarGrid';
 import Pagination from '../components/Pagination';
 
+
 function Search() {
     const [query, setQuery] = useState('');
     const [filters, setFilters] = useState({

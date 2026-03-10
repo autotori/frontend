@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
 
 function formatEur(n) {
@@ -46,7 +47,7 @@ function guessFuel(text) {
 
 // Common car makes to look for in text
 const CAR_MAKES = [
-  "toyota", "volkswagen", "vw", "bmw", "mercedes", "audi", "volvo", 
+  "toyota", "volkswagen", "vw", "bmw", "mercedes", "audi", "volvo",
   "ford", "honda", "nissan", "mazda", "skoda", "kia", "hyundai",
   "peugeot", "renault", "citroen", "seat", "opel", "tesla", "lexus",
   "porsche", "land rover", "range rover", "jaguar", "mini", "fiat",
@@ -55,7 +56,7 @@ const CAR_MAKES = [
 
 function extractCarMake(text) {
   const lower = text.toLowerCase();
-  
+
   // Look for any known car make in the text
   for (const make of CAR_MAKES) {
     if (lower.includes(make)) {
@@ -63,7 +64,7 @@ function extractCarMake(text) {
       return make.split(' ').map(w => titleCaseWord(w)).join(' ');
     }
   }
-  
+
   return null;
 }
 
@@ -86,11 +87,11 @@ function extractSearchQuery(text) {
   // First, try to find a car make
   const make = extractCarMake(text);
   if (make) return make;
-  
+
   // Otherwise, look for meaningful keywords
   const lower = text.toLowerCase();
   const keywords = [];
-  
+
   // Look for size/type keywords
   if (lower.includes("suv")) keywords.push("SUV");
   if (lower.includes("sedan")) keywords.push("sedan");
@@ -100,10 +101,10 @@ function extractSearchQuery(text) {
   if (lower.includes("sport")) keywords.push("sport");
   if (lower.includes("compact")) keywords.push("compact");
   if (lower.includes("luxury")) keywords.push("luxury");
-  
+
   // If we found type keywords, return them
   if (keywords.length > 0) return keywords.join(" ");
-  
+
   // As a last resort, return empty string to search all
   return "";
 }
@@ -121,9 +122,8 @@ function ListingCard({ listing, highlight }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`block rounded-xl border bg-white hover:shadow-md transition ${
-        highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
-      }`}
+      className={`block rounded-xl border bg-white hover:shadow-md transition ${highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
+        }`}
     >
       <div className="flex gap-4 p-4">
         <div className="w-28 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
@@ -244,7 +244,7 @@ function AIAdvisor() {
           need: text,
           q,
           filters,
-          preferences: {}, 
+          preferences: {},
           maxPicks: 5
         })
       });
@@ -284,6 +284,8 @@ function AIAdvisor() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
+
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
@@ -352,11 +354,10 @@ function AIAdvisor() {
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        msg.role === "user"
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === "user"
                           ? "bg-blue-500 text-white"
                           : "bg-white border border-gray-200 text-gray-900"
-                      }`}
+                        }`}
                     >
                       {msg.content}
                     </div>
@@ -387,9 +388,8 @@ function AIAdvisor() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`px-6 py-2 rounded-lg transition-colors font-medium ${
-                  loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
+                className={`px-6 py-2 rounded-lg transition-colors font-medium ${loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
               >
                 Send
               </button>
