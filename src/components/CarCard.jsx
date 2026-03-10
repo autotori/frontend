@@ -43,7 +43,7 @@ function CarCard({ car, source }) {
 
     const cardContent = (
         <>
-            <div className="relative h-56 overflow-hidden bg-gray-100">
+            <div className="relative h-40 sm:h-48 md:h-56 overflow-hidden bg-gray-100">
                 {imageUrl ? (
                     <img
                         src={imageUrl}
@@ -63,22 +63,22 @@ function CarCard({ car, source }) {
                     </div>
                 )}
                 {sourceText && (
-                    <div className={`absolute top-4 right-4 ${sourceColor} text-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-lg`}>
+                    <div className={`absolute top-2 right-2 sm:top-4 sm:right-4 ${sourceColor} text-white px-2 sm:px-4 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-lg`}>
                         {sourceText}
                     </div>
                 )}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                    <div className="text-3xl font-bold text-white drop-shadow-lg">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 sm:p-4">
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
                         {price}
                     </div>
                 </div>
             </div>
-            <div className="p-6">
-                <h4 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 min-h-[56px]">
+            <div className="p-3 sm:p-4 md:p-6">
+                <h4 className="text-sm sm:text-base md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 min-h-[40px] sm:min-h-[48px] md:min-h-[56px]">
                     {title}
                 </h4>
 
-                <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-2 md:gap-3 mb-2 sm:mb-4">
                     {year && (
                         <div className="flex items-center gap-2 text-gray-700">
                             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
