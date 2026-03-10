@@ -9,30 +9,48 @@ const HERO_IMAGE = 'https://images.unsplash.com/photo-1769113528181-1ec33345ba3d
 // Car Section Component
 const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources, loading }) => (
     <div className="mb-12 sm:mb-16 md:mb-20">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 sm:mb-8 gap-2 sm:gap-4">
-            <div>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-5 sm:mb-8 gap-2 sm:gap-4">
+            <div className="flex flex-col">
                 <h3 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-3">{title}</h3>
-                <p className="text-sm sm:text-base md:text-lg text-gray-600">{description}</p>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-2">{description}</p>
+                {/* Katso lisää button for mobile */}
+                <Link
+                    to={link}
+                    className="md:hidden text-blue-600 hover:text-blue-700 font-semibold text-base mt-1"
+                >
+                    Katso lisää
+                </Link>
             </div>
-            <Link to={link} className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg group">
-                <span>View All</span>
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </Link>
+            <div className="flex items-center gap-2 md:gap-4">
+                {/* Katso lisää button for desktop */}
+                <Link
+                    to={link}
+                    className="hidden md:inline text-blue-600 hover:text-blue-700 font-semibold text-base"
+                >
+                    Katso lisää
+                </Link>
+                {/* Carousel scroll buttons at top right */}
+                <button
+                    onClick={() => scroll(scrollRef, 'left')}
+                    className="hidden md:inline-flex items-center justify-center bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
+                    aria-label="Scroll left"
+                >
+                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button
+                    onClick={() => scroll(scrollRef, 'right')}
+                    className="hidden md:inline-flex items-center justify-center bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
+                    aria-label="Scroll right"
+                >
+                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
         </div>
-        <div className="flex items-center gap-2 sm:gap-4">
-            {/* Scroll arrows hidden on mobile — users swipe instead */}
-            <button
-                onClick={() => scroll(scrollRef, 'left')}
-                className="hidden md:flex flex-shrink-0 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
-                aria-label="Scroll left"
-            >
-                <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-
+        <div>
             <div ref={scrollRef} className="flex-1 flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto pb-4 sm:pb-6 scrollbar-hide snap-x snap-mandatory scroll-smooth">
                 {loading ? (
                     <div className="flex-1 flex items-center justify-center py-12 sm:py-20">
@@ -50,16 +68,6 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
                     </div>
                 )}
             </div>
-
-            <button
-                onClick={() => scroll(scrollRef, 'right')}
-                className="hidden md:flex flex-shrink-0 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
-                aria-label="Scroll right"
-            >
-                <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
         </div>
     </div>
 );
