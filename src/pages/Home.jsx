@@ -13,22 +13,15 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
             <div className="flex flex-col">
                 <h3 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-3">{title}</h3>
                 <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-2">{description}</p>
-                {/* Katso lisää button for mobile */}
+                {/* Katso lisää button for all screens */}
                 <Link
                     to={link}
-                    className="md:hidden text-blue-600 hover:text-blue-700 font-semibold text-base mt-1"
+                    className="text-blue-600 hover:text-blue-700 font-semibold text-base mt-1"
                 >
                     Katso lisää
                 </Link>
             </div>
             <div className="flex items-center gap-2 md:gap-4">
-                {/* Katso lisää button for desktop */}
-                <Link
-                    to={link}
-                    className="hidden md:inline text-blue-600 hover:text-blue-700 font-semibold text-base"
-                >
-                    Katso lisää
-                </Link>
                 {/* Carousel scroll buttons at top right */}
                 <button
                     onClick={() => scroll(scrollRef, 'left')}
