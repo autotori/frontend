@@ -110,7 +110,7 @@ export default function AICompare() {
       <div className="input-section">
         <div>
           <label className="input-label">
-            Enter Car Listing URLs
+            Syötä auton ilmoituksen URL-osoitteet
           </label>
           {urls.map((url, index) => (
             <div key={index} className="url-input-row">

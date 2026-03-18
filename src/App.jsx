@@ -6,6 +6,7 @@ import Compare from './pages/Compare';
 import AIAdvisor from './pages/AIAdvisor';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import AdvertisementPlacements from './pages/AdvertisementPlacements';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/ai-advisor" element={<AIAdvisor />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/advertisement-placements" element={<AdvertisementPlacements />} />
           </Routes>
         </main>
 

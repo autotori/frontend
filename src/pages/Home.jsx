@@ -136,7 +136,7 @@ function Home() {
                         to="/search"
                         className="group relative inline-flex items-center justify-center px-8 py-3.5 sm:px-10 sm:py-4 md:px-12 md:py-5 text-base sm:text-lg font-semibold text-blue-700 bg-gradient-to-r from-white via-blue-100 to-blue-200 rounded-full hover:from-blue-100 hover:to-blue-300 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border border-blue-200"
                     >
-                        <span>Explore</span>
+                        <span>Tutustu autoihin</span>
                     </Link>
 
                     {/* Scroll Indicator */}
@@ -176,7 +176,7 @@ function Home() {
                                     </svg>
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                                    Multiple Sources
+                                    Useita lähteitä
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
                                     Search across <span className="font-semibold text-gray-800">Kamux, Autokeskus, and Saka</span> all in one place. Thousands of cars at your fingertips.
