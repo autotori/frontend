@@ -23,3 +23,40 @@ export async function getSources() {
   }
   return response.json();
 }
+
+export async function submitContactForm(payload) {
+  const formData = new FormData();
+
+  formData.append('name', payload.name || '');
+  formData.append('email', payload.email || '');
+  formData.append('phone', payload.phone || '');
+  formData.append('inquiryType', payload.inquiryType || 'general_query');
+  formData.append('message', payload.message || '');
+
+  if (payload.companyName) formData.append('companyName', payload.companyName);
+  if (payload.adBudget) formData.append('adBudget', payload.adBudget);
+  if (payload.campaignTimeline) formData.append('campaignTimeline', payload.campaignTimeline);
+
+  if (Array.isArray(payload.adSpaces)) {
+    payload.adSpaces.forEach((space) => {
+      formData.append('adSpaces', space);
+    });
+  }
+
+  if (Array.isArray(payload.adFiles)) {
+    payload.adFiles.forEach((file) => {
+      formData.append('adFiles', file);
+    });
+  }
+
+  const response = await fetch(`${API_BASE}/contact`, {
+    method: 'POST',
+    body: formData
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send message');
+  }
+
+  return response.json();
+}

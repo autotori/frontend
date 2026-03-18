@@ -16,7 +16,8 @@ function Navbar() {
         { path: '/search', label: 'Haku' },
         { path: '/compare', label: 'Vertaa' },
         { path: '/ai-advisor', label: 'Tekoälyneuvoja' },
-        { path: '/about', label: 'Tietoa' }
+        { path: '/about', label: 'Tietoa' },
+        { path: '/contact', label: 'Contact' }
     ];
 
     const isActive = (path) => {
