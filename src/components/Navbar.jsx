@@ -16,7 +16,8 @@ function Navbar() {
         { path: '/search', label: 'Search' },
         { path: '/compare', label: 'Compare' },
         { path: '/ai-advisor', label: 'AI Advisor' },
-        { path: '/about', label: 'About' }
+        { path: '/about', label: 'About' },
+        { path: '/contact', label: 'Contact' }
     ];
 
     const isActive = (path) => {
