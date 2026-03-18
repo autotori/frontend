@@ -28,7 +28,7 @@ export default function AICompare() {
 
   const handleCompare = async () => {
     const validUrls = urls.filter(url => url.trim() !== '');
-    
+
     if (validUrls.length < 2) {
       setError('Please enter at least 2 car URLs');
       return;
@@ -100,7 +100,7 @@ export default function AICompare() {
           <div className="header-text">
             <h2>AI-Powered Car Comparison</h2>
             <p>
-              Get intelligent insights and recommendations powered by advanced AI analysis. 
+              Get intelligent insights and recommendations powered by advanced AI analysis.
               Compare cars from Kamux, Saka, and Autokeskus with detailed pros, cons, and expert suggestions.
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function AICompare() {
                 type="url"
                 value={url}
                 onChange={(e) => updateUrl(index, e.target.value)}
-                placeholder={`Car ${index + 1} URL (e.g., https://www.kamux.fi/...)`}
+                placeholder={`Auton ${index + 1} URL (esim. https://www.kamux.fi/...)`}
                 className="url-input"
               />
               {urls.length > 2 && (
@@ -145,7 +145,7 @@ export default function AICompare() {
               <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              Add Another Car {urls.length < 5 && `(${5 - urls.length} left)`}
+              Lisää auto {urls.length < 5 && `(${5 - urls.length} jäljellä)`}
             </button>
           )}
           <button
@@ -156,7 +156,7 @@ export default function AICompare() {
             <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            {loading ? 'Analyzing...' : 'Compare with AI'}
+            {loading ? 'Analysoidaan...' : 'Vertaa tekoälyllä'}
           </button>
           {result && (
             <button
@@ -166,7 +166,7 @@ export default function AICompare() {
               <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Start Over
+              Aloita alusta
             </button>
           )}
         </div>
@@ -227,7 +227,7 @@ export default function AICompare() {
                       <span className="recommended-label">Recommended</span>
                     )}
                   </div>
-                  
+
                   {comp.car && (
                     <div className="car-details">
                       <div className="details-grid">
@@ -347,7 +347,7 @@ export default function AICompare() {
                   </svg>
                 </div>
                 <div className="recommendation-text">
-                  <h3>Final Recommendation</h3>
+                  <h3>Lopullinen suositus</h3>
                   <p>{result.data.recommendation.reasoning}</p>
                 </div>
               </div>

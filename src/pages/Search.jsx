@@ -74,8 +74,8 @@ function Search() {
         <div className="bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
                 <div className="mb-4 sm:mb-6">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Search Cars</h2>
-                    <p className="text-sm sm:text-base text-gray-600">Find your perfect car from multiple sources across Finland</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Hae autoja</h2>
+                    <p className="text-sm sm:text-base text-gray-600">Löydä täydellinen auto useista lähteistä ympäri Suomen</p>
                 </div>
 
                 <SearchBar
@@ -90,14 +90,14 @@ function Search() {
 
                 {error && (
                     <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-                        <p className="font-medium">Error: {error}</p>
+                        <p className="font-medium">Virhe: {error}</p>
                     </div>
                 )}
 
                 {loading && (
                     <div className="text-center py-12">
                         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                        <p className="mt-4 text-gray-600">Searching...</p>
+                        <p className="mt-4 text-gray-600">Haetaan autoja...</p>
                     </div>
                 )}
 
@@ -105,11 +105,11 @@ function Search() {
                     <>
                         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <div className="text-xs sm:text-sm text-gray-600">
-                                Found <span className="font-semibold text-gray-900">{results.total || 0}</span> results
-                                {results.query && ` for "${results.query}"`}
+                                Löytyi <span className="font-semibold text-gray-900">{results.total || 0}</span> autoa
+                                {results.query && ` haulla "${results.query}"`}
                             </div>
                             <div className="text-xs text-gray-400">
-                                Page {results.page || 1} of {results.totalPages || 1}
+                                Sivu {results.page || 1} / {results.totalPages || 1}
                             </div>
                         </div>
 
@@ -130,8 +130,8 @@ function Search() {
                         <svg className="w-14 h-14 sm:w-20 sm:h-20 text-gray-300 mx-auto mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <p className="text-gray-500 text-lg sm:text-xl font-semibold mb-1 sm:mb-2">No cars found</p>
-                        <p className="text-gray-400 text-xs sm:text-sm">Try adjusting your search criteria or filters</p>
+                        <p className="text-gray-500 text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Ei autoja löytynyt</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">Kokeile muuttaa hakua tai suodattimia</p>
                     </div>
                 )}
             </div>

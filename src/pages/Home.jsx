@@ -11,14 +11,13 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
     <div className="mb-12 sm:mb-16 md:mb-20">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-5 sm:mb-8 gap-2 sm:gap-4">
             <div className="flex flex-col">
-                <h3 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-3">{title}</h3>
+                <h3 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-3">{title === "Electric Cars" ? "Sähköautot" : title === "Hybrid Cars" ? "Hybridiautot" : title === "Family Cars" ? "Perheautot" : title === "Sport Cars" ? "Urheiluautot" : title}</h3>
                 <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-2">{description}</p>
-                {/* Katso lisää button for all screens */}
                 <Link
                     to={link}
                     className="text-blue-600 hover:text-blue-700 font-semibold text-base mt-1"
                 >
-                    Katso lisää
+                    Näytä lisää
                 </Link>
             </div>
             <div className="flex items-center gap-2 md:gap-4">
@@ -47,7 +46,7 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
             <div ref={scrollRef} className="flex-1 flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto pb-4 sm:pb-6 scrollbar-hide snap-x snap-mandatory scroll-smooth">
                 {loading ? (
                     <div className="flex-1 flex items-center justify-center py-12 sm:py-20">
-                        <div className="text-gray-400">Loading cars...</div>
+                        <div className="text-gray-400">Ladataan autoja...</div>
                     </div>
                 ) : cars.length > 0 ? (
                     cars.map((car, idx) => (
@@ -57,7 +56,7 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
                     ))
                 ) : (
                     <div className="flex-1 flex items-center justify-center py-12 sm:py-20">
-                        <div className="text-gray-400">No cars available</div>
+                        <div className="text-gray-400">Ei autoja saatavilla</div>
                     </div>
                 )}
             </div>
@@ -127,10 +126,10 @@ function Home() {
                 {/* Hero Content */}
                 <div className="relative h-full flex flex-col items-center justify-center text-center px-5 sm:px-6">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 max-w-5xl leading-tight">
-                        Finland's smartest car aggregator platform
+                        Suomen älykkäin autojen aggregaattori
                     </h1>
                     <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-3xl leading-relaxed">
-                        Search thousands of quality cars from multiple trusted dealers. Find your perfect car with AI-powered recommendations!
+                        Etsi tuhansia laadukkaita autoja useilta luotettavilta jälleenmyyjiltä. Löydä täydellinen auto tekoälyn avulla!
                     </p>
 
                     <Link
@@ -197,7 +196,7 @@ function Home() {
                                     </svg>
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors">
-                                    AI Recommendations
+                                    Tekoälyn suositukset
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
                                     Get <span className="font-semibold text-gray-800">personalized suggestions</span> based on your budget, needs, and driving habits with our AI advisor.
@@ -217,7 +216,7 @@ function Home() {
                                     </svg>
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition-colors">
-                                    Compare Cars
+                                    Vertaa autoja
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
                                     <span className="font-semibold text-gray-800">Side-by-side comparison</span> of specs, prices, and features. Make informed decisions with detailed comparisons.
@@ -261,7 +260,7 @@ function Home() {
                             to="/search"
                             className="group relative px-8 py-3.5 sm:px-10 sm:py-4 md:px-12 md:py-5 bg-white text-blue-600 text-base sm:text-lg font-bold rounded-full hover:bg-gray-50 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105 inline-flex items-center"
                         >
-                            <span>Start Searching</span>
+                            <span>Aloita haku</span>
                             <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
@@ -274,7 +273,7 @@ function Home() {
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            <span>Try AI Advisor</span>
+                            <span>Kokeile AI-neuvojaa</span>
                         </Link>
                     </div>
 
@@ -356,15 +355,15 @@ function Home() {
                     <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 text-center">
                         <div>
                             <div className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-1 sm:mb-2">1000+</div>
-                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Quality Cars</div>
+                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Laadukkaat autot</div>
                         </div>
                         <div>
                             <div className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-1 sm:mb-2">100%</div>
-                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Free to Use</div>
+                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Ilmainen käyttää</div>
                         </div>
                         <div>
                             <div className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-1 sm:mb-2">24/7</div>
-                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Available</div>
+                            <div className="text-blue-200 text-xs sm:text-sm md:text-lg">Saatavilla</div>
                         </div>
                     </div>
                 </div>

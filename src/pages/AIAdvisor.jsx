@@ -288,51 +288,38 @@ function AIAdvisor() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">AI Car Advisor</h2>
-          <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Tekoälyautoneuvoja</h2>
+          <p className="text-gray-600">Saat yksilöllisiä autosuosituksia tarpeidesi mukaan</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Budjettianalyysi</h3>
             <p className="text-sm text-gray-600">
               Get recommendations based on your budget and total cost of ownership
             </p>
           </Card>
 
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Family Needs</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Perheen tarpeet</h3>
             <p className="text-sm text-gray-600">
               Find cars that match your family size and lifestyle requirements
             </p>
           </Card>
 
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Fuel Efficiency</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Polttoainetehokkuus</h3>
             <p className="text-sm text-gray-600">
               Compare fuel types and running costs for your driving habits
             </p>
           </Card>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <h3 className="font-semibold text-blue-900 mb-2">💡 How to use</h3>
-          <div className="text-sm text-blue-800 space-y-1">
-            <p><strong>Natural language examples:</strong></p>
-            <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>"I need a family car under 30000 euros"</li>
-              <li>"Show me BMW automatic transmission cars"</li>
-              <li>"Looking for a reliable Toyota hybrid"</li>
-              <li>"Need a diesel SUV under 40000"</li>
-              <li>"Recommend an electric car for city driving"</li>
-              <li>"Want a luxury sedan with low mileage"</li>
-            </ul>
-          </div>
-        </div>
+        {/* ...existing code... */}
 
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-            <h3 className="text-white font-semibold">Chat with AI Advisor</h3>
+            <h3 className="text-white font-semibold">Keskustele tekoälyneuvojan kanssa</h3>
           </div>
 
           <div className="h-96 overflow-y-auto p-6 bg-gray-50">
@@ -355,8 +342,8 @@ function AIAdvisor() {
                   >
                     <div
                       className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === "user"
-                          ? "bg-blue-500 text-white"
-                          : "bg-white border border-gray-200 text-gray-900"
+                        ? "bg-blue-500 text-white"
+                        : "bg-white border border-gray-200 text-gray-900"
                         }`}
                     >
                       {msg.content}
@@ -391,7 +378,7 @@ function AIAdvisor() {
                 className={`px-6 py-2 rounded-lg transition-colors font-medium ${loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
                   }`}
               >
-                Send
+                Lähetä
               </button>
             </div>
           </form>
@@ -400,24 +387,14 @@ function AIAdvisor() {
         {error ? (
           <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-sm text-red-800">
-              <span className="font-semibold">Error:</span> {error}
+              <span className="font-semibold">Virhe:</span> {error}
             </p>
           </div>
         ) : null}
 
         {aiResult ? <PicksPanel data={aiResult} /> : null}
 
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <p className="text-sm text-yellow-800">
-            <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
-            If listings are missing key details (e.g. service history), the advisor will mention limitations.
-          </p>
-          {lastUserNeed ? (
-            <p className="text-xs text-yellow-700 mt-2">
-              Last need: <span className="font-mono">{lastUserNeed}</span>
-            </p>
-          ) : null}
-        </div>
+        {/* ...existing code... */}
       </div>
     </div>
   );
