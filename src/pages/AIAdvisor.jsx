@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import MobileAdSlot from '../components/MobileAdSlot';
+import MobilePopupAd from '../components/MobilePopupAd';
 
 
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
@@ -292,6 +294,22 @@ function AIAdvisor() {
           <p className="text-gray-600">Get personalized car recommendations based on your needs</p>
         </div>
 
+        {/* Top Banner Ad Placeholder (Desktop only) */}
+        <div className="hidden md:flex justify-center mb-8">
+          <div className="bg-blue-200 border border-blue-400 rounded-xl flex items-center justify-center text-blue-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 250 }}>
+            Top Banner Ad<br />
+            970x250 px (Billboard)
+            <div className="text-xs font-normal mt-2">Position: Above personalized recommendations | Engagement: Premium placement</div>
+          </div>
+        </div>
+
+        <MobileAdSlot
+          className="mb-6"
+          title="AI Advisor Top Ad"
+          subtitle="320x100 mobile banner"
+          tone="blue"
+        />
+
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
             <h3 className="font-semibold text-gray-900 mb-2">Budget Analysis</h3>
@@ -355,8 +373,8 @@ function AIAdvisor() {
                   >
                     <div
                       className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === "user"
-                          ? "bg-blue-500 text-white"
-                          : "bg-white border border-gray-200 text-gray-900"
+                        ? "bg-blue-500 text-white"
+                        : "bg-white border border-gray-200 text-gray-900"
                         }`}
                     >
                       {msg.content}
@@ -407,6 +425,15 @@ function AIAdvisor() {
 
         {aiResult ? <PicksPanel data={aiResult} /> : null}
 
+        {aiResult ? (
+          <MobileAdSlot
+            className="mt-6"
+            title="Recommendations Inline Ad"
+            subtitle="300x250 mobile card"
+            tone="green"
+          />
+        ) : null}
+
         <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">
             <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
@@ -418,7 +445,29 @@ function AIAdvisor() {
             </p>
           ) : null}
         </div>
+
+        {/* Bottom Banner Ad Placeholder (Desktop only) */}
+        <div className="hidden md:flex justify-center mt-10">
+          <div className="bg-yellow-200 border border-yellow-400 rounded-xl flex items-center justify-center text-yellow-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 90 }}>
+            Bottom Banner Ad<br />
+            970x90 px (Large Leaderboard)
+            <div className="text-xs font-normal mt-2">Position: Below advisor content | Engagement: Extended visibility</div>
+          </div>
+        </div>
+
+        <MobileAdSlot
+          className="mt-6"
+          title="AI Advisor Bottom Ad"
+          subtitle="320x100 mobile banner"
+          tone="amber"
+        />
       </div>
+
+      <MobilePopupAd
+        storageKey="popup-ad-ai-advisor"
+        title="Sponsored AI Match"
+        description="Mobile popup ad example. Tap close to return to the advisor."
+      />
     </div>
   );
 }
