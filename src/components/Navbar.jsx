@@ -12,11 +12,11 @@ function Navbar() {
     }, [location.pathname]);
 
     const navItems = [
-        { path: '/', label: 'Home' },
-        { path: '/search', label: 'Search' },
-        { path: '/compare', label: 'Compare' },
-        { path: '/ai-advisor', label: 'AI Advisor' },
-        { path: '/about', label: 'About' },
+        { path: '/', label: 'Etusivu' },
+        { path: '/search', label: 'Haku' },
+        { path: '/compare', label: 'Vertaa' },
+        { path: '/ai-advisor', label: 'Tekoälyneuvoja' },
+        { path: '/about', label: 'Tietoa' },
         { path: '/contact', label: 'Contact' }
     ];
 
@@ -76,9 +76,8 @@ function Navbar() {
 
             {/* Mobile Menu */}
             <div
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                    mobileOpen ? 'max-h-80 border-t border-gray-200' : 'max-h-0'
-                }`}
+                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? 'max-h-80 border-t border-gray-200' : 'max-h-0'
+                    }`}
             >
                 <div className="px-4 py-3 space-y-1 bg-white">
                     {navItems.map((item) => (

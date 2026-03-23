@@ -8,11 +8,39 @@ const INQUIRY_OPTIONS = [
 ];
 
 const AD_SPACE_OPTIONS = [
-  { value: 'top_banner_735x435', label: 'Top banner - 735 x 435' },
-  { value: 'homepage_sidebar_300x600', label: 'Homepage sidebar - 300 x 600' },
-  { value: 'search_results_inline_970x250', label: 'Search results inline - 970 x 250' },
-  { value: 'compare_page_footer_728x90', label: 'Compare page footer - 728 x 90' },
-  { value: 'mobile_sticky_footer_320x100', label: 'Mobile sticky footer - 320 x 100' }
+  // Desktop
+  { value: 'home_top_banner_970x250', label: 'Etusivu - Yläbanneri - 970×250 - Desktop' },
+  { value: 'home_top_banner_728x90', label: 'Etusivu - Yläbanneri - 728×90 - Desktop' },
+  { value: 'home_mid_page_728x90', label: 'Etusivu - Keskisivu - 728×90 - Desktop' },
+  { value: 'home_mid_page_300x250', label: 'Etusivu - Keskisivu - 300×250 - Desktop' },
+  { value: 'home_bottom_banner_970x90', label: 'Etusivu - Alabanneri - 970×90 - Desktop' },
+  { value: 'home_feed_ads_300x250', label: 'Etusivu - Feed-mainokset - 300×250 - Kaikki' },
+  { value: 'ai_advisor_top_banner_970x250', label: 'Tekoälyneuvoja - Yläbanneri - 970×250 - Desktop' },
+  { value: 'ai_advisor_bottom_banner_970x90', label: 'Tekoälyneuvoja - Alabanneri - 970×90 - Desktop' },
+  { value: 'ai_comparison_top_banner_970x250', label: 'Vertaa - Yläbanneri - 970×250 - Desktop' },
+  { value: 'ai_comparison_bottom_banner_970x90', label: 'Vertaa - Alabanneri - 970×90 - Desktop' },
+  { value: 'search_top_banner_970x250', label: 'Haku - Yläbanneri - 970×250 - Desktop' },
+  { value: 'search_bottom_banner_970x90', label: 'Haku - Alabanneri - 970×90 - Desktop' },
+  { value: 'search_feed_ads_300x250', label: 'Haku - Feed-mainokset - 300×250 - Kaikki' },
+  { value: 'feed_native_integrated_cards_300x250', label: 'Feed (Native) - Integroitu kortti - 300×250 - Kaikki' },
+  { value: 'feed_native_integrated_cards_336x280', label: 'Feed (Native) - Integroitu kortti - 336×280 - Kaikki' },
+
+  // Mobile
+  { value: 'home_top_banner_200x200', label: 'Etusivu - Yläbanneri - 200×200 - Mobile' },
+  { value: 'home_feed_ads_300x250_mobile', label: 'Etusivu - Feed-mainokset - 300×250 - Mobile' },
+  { value: 'home_feed_ads_336x280_mobile', label: 'Etusivu - Feed-mainokset - 336×280 - Mobile' },
+  { value: 'home_mid_page_200x200', label: 'Etusivu - Keskisivu - 200×200 - Mobile' },
+  { value: 'home_bottom_banner_200x200', label: 'Etusivu - Alabanneri - 200×200 - Mobile' },
+  { value: 'ai_advisor_top_banner_200x200', label: 'Tekoälyneuvoja - Yläbanneri - 200×200 - Mobile' },
+  { value: 'ai_advisor_bottom_banner_200x200', label: 'Tekoälyneuvoja - Alabanneri - 200×200 - Mobile' },
+  { value: 'ai_compare_top_banner_200x200', label: 'Vertaa - Yläbanneri - 200×200 - Mobile' },
+  { value: 'ai_compare_bottom_banner_200x200', label: 'Vertaa - Alabanneri - 200×200 - Mobile' },
+  { value: 'search_top_banner_200x200', label: 'Haku - Yläbanneri - 200×200 - Mobile' },
+  { value: 'search_feed_ads_300x250_mobile', label: 'Haku - Feed-mainokset - 300×250 - Mobile' },
+  { value: 'search_feed_ads_336x280_mobile', label: 'Haku - Feed-mainokset - 336×280 - Mobile' },
+  { value: 'feed_native_integrated_cards_300x250_mobile', label: 'Feed (Native) - Integroitu kortti - 300×250 - Mobile' },
+  { value: 'feed_native_integrated_cards_336x280_mobile', label: 'Feed (Native) - Integroitu kortti - 336×280 - Mobile' },
+  { value: 'popup_center_overlay_200x200', label: 'Popup - Keskioverlay - 200×200 - Mobile' }
 ];
 
 const INITIAL_FORM = {
@@ -136,9 +164,14 @@ function Contact() {
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div className="mb-6 sm:mb-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Contact Us</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Ota yhteyttä</h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Have a question, found a bug, or want to advertise with us? Use this single form and we&apos;ll route your request.
+            Onko sinulla kysyttävää, löysitkö virheen vai haluatko mainostaa palvelussamme? Käytä tätä lomaketta, niin ohjaamme pyyntösi oikealle henkilölle.
+          </p>
+          <p className="text-sm text-blue-700 mt-4">
+            <a href="/advertisement-placements" className="underline hover:text-blue-900">
+              Katso kaikki mainospaikat ja hinnat
+            </a>
           </p>
         </div>
 
@@ -326,11 +359,10 @@ function Contact() {
                               return (
                                 <label
                                   key={option.value}
-                                  className={`flex items-start gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
-                                    checked
-                                      ? 'border-blue-300 bg-blue-50'
-                                      : 'border-transparent bg-white hover:bg-gray-50'
-                                  }`}
+                                  className={`flex items-start gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${checked
+                                    ? 'border-blue-300 bg-blue-50'
+                                    : 'border-transparent bg-white hover:bg-gray-50'
+                                    }`}
                                 >
                                   <input
                                     type="checkbox"
@@ -421,11 +453,10 @@ function Contact() {
 
               {status && (
                 <div
-                  className={`text-sm rounded-lg px-3 py-2 border ${
-                    status.type === 'success'
-                      ? 'bg-green-50 border-green-200 text-green-700'
-                      : 'bg-red-50 border-red-200 text-red-700'
-                  }`}
+                  className={`text-sm rounded-lg px-3 py-2 border ${status.type === 'success'
+                    ? 'bg-green-50 border-green-200 text-green-700'
+                    : 'bg-red-50 border-red-200 text-red-700'
+                    }`}
                 >
                   {status.message}
                 </div>

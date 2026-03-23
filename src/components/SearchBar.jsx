@@ -15,14 +15,14 @@ export default function SearchBar({ onSearch, initialQuery = '' }) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by make, model..."
+          placeholder="Hae merkin, mallin mukaan..."
           className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <button
           type="submit"
           className="px-6 py-2.5 sm:py-3 bg-blue-600 text-white font-medium text-sm sm:text-base rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Search
+          Hae
         </button>
       </div>
     </form>
