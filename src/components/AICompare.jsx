@@ -98,10 +98,9 @@ export default function AICompare() {
             </svg>
           </div>
           <div className="header-text">
-            <h2>AI-Powered Car Comparison</h2>
+            <h2>Tekoälypohjainen autojen vertailu</h2>
             <p>
-              Get intelligent insights and recommendations powered by advanced AI analysis.
-              Compare cars from Kamux, Saka, and Autokeskus with detailed pros, cons, and expert suggestions.
+              Hanki älykkäitä näkemyksiä ja suosituksia edistyneen tekoälyanalyysin avulla. Vertaa Kamuxin, Sakan ja Autokeskuksen autoja yksityiskohtaisten etujen, haittojen ja asiantuntijoiden ehdotusten avulla.
             </p>
           </div>
         </div>
@@ -174,7 +173,7 @@ export default function AICompare() {
 
       {error && (
         <div className="error-container">
-          <p className="error-text">Error: {error}</p>
+          <p className="error-text">Virhe: {error}</p>
         </div>
       )}
 
@@ -188,8 +187,8 @@ export default function AICompare() {
               </svg>
             </div>
           </div>
-          <p className="loading-text">Analyzing with AI...</p>
-          <p className="loading-subtext">This may take a few moments</p>
+          <p className="loading-text">Analysoidaan tekoälyllä...</p>
+          <p className="loading-subtext">Tässä voi kestää hetki</p>
         </div>
       )}
 
@@ -203,7 +202,7 @@ export default function AICompare() {
                 </svg>
               </div>
               <div className="summary-content">
-                <h3>Analysis Summary</h3>
+                <h3>Analyysin yhteenveto</h3>
                 <p>{result.data.summary}</p>
               </div>
             </div>
@@ -224,7 +223,7 @@ export default function AICompare() {
                   <div className="car-title-row">
                     <h3>{comp.title}</h3>
                     {isWinner && (
-                      <span className="recommended-label">Recommended</span>
+                      <span className="recommended-label">Suositus</span>
                     )}
                   </div>
 
@@ -236,7 +235,7 @@ export default function AICompare() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <div>
-                            <span className="detail-label">Price</span>
+                            <span className="detail-label">Hinta</span>
                             <div className="detail-value">{comp.car.priceEur ? `€${comp.car.priceEur.toLocaleString()}` : 'N/A'}</div>
                           </div>
                         </div>
@@ -245,7 +244,7 @@ export default function AICompare() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                           <div>
-                            <span className="detail-label">Year</span>
+                            <span className="detail-label">Vuosimalli</span>
                             <div className="detail-value">{comp.car.year || 'N/A'}</div>
                           </div>
                         </div>
@@ -254,7 +253,7 @@ export default function AICompare() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                           </svg>
                           <div>
-                            <span className="detail-label">Mileage</span>
+                            <span className="detail-label">Ajokilometrit</span>
                             <div className="detail-value">{comp.car.mileageKm ? `${comp.car.mileageKm.toLocaleString()} km` : 'N/A'}</div>
                           </div>
                         </div>
@@ -263,7 +262,7 @@ export default function AICompare() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
                           </svg>
                           <div>
-                            <span className="detail-label">Fuel</span>
+                            <span className="detail-label">Polttoaine</span>
                             <div className="detail-value">{comp.car.fuel || 'N/A'}</div>
                           </div>
                         </div>
@@ -273,7 +272,7 @@ export default function AICompare() {
 
                   <div className="score-section">
                     <div className="score-header">
-                      <span className="score-label">AI Score</span>
+                      <span className="score-label">Tekoälypisteet</span>
                       <span className="score-value">{comp.score.toFixed(1)}/10</span>
                     </div>
                     <div className="score-bar-container">
@@ -291,7 +290,7 @@ export default function AICompare() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <h4>Strengths</h4>
+                      <h4>Vahvuudet</h4>
                     </div>
                     <ul className="list-items">
                       {comp.pros.map((pro, i) => (
@@ -310,7 +309,7 @@ export default function AICompare() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </div>
-                      <h4>Considerations</h4>
+                      <h4>Huomioitavaa</h4>
                     </div>
                     <ul className="list-items">
                       {comp.cons.map((con, i) => (
@@ -328,7 +327,7 @@ export default function AICompare() {
                     rel="noopener noreferrer"
                     className="view-listing-btn"
                   >
-                    <span>View Full Listing</span>
+						<span>Näytä koko ilmoitus</span>
                     <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>

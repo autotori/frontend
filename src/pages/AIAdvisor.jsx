@@ -163,7 +163,7 @@ function PicksPanel({ data }) {
   return (
     <div className="mt-6">
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="font-semibold text-gray-900">Recommendations</h3>
+        <h3 className="font-semibold text-gray-900">Suositukset</h3>
         {summary ? <p className="text-sm text-gray-700 mt-2">{summary}</p> : null}
 
         {picks.length === 0 ? (
@@ -180,15 +180,15 @@ function PicksPanel({ data }) {
                         #{i + 1} {p.title}
                       </div>
                       <div className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700">
-                        Score: {Number(p.score ?? 0).toFixed(1)}/10
+                        Pisteet: {Number(p.score ?? 0).toFixed(1)}/10
                       </div>
                     </div>
                     <div className="mt-2 text-sm text-gray-700">
                       <div>
-                        <span className="font-semibold">Why:</span> {p.why}
+                        <span className="font-semibold">Perustelut:</span> {p.why}
                       </div>
                       <div className="mt-1">
-                        <span className="font-semibold">Tradeoffs:</span> {p.tradeoffs}
+                        <span className="font-semibold">Huomioitavaa:</span> {p.tradeoffs}
                       </div>
                     </div>
                   </div>
@@ -263,8 +263,8 @@ function AIAdvisor() {
       const assistantText =
         data?.summary ||
         (Array.isArray(data?.picks) && data.picks.length
-          ? `I found ${data.picks.length} good options. Scroll down to see details.`
-          : "I couldn't find good matches from current listings. Try being more specific or relaxing your requirements.");
+          ? `Löysin ${data.picks.length} hyvää vaihtoehtoa. Selaa alaspäin nähdäksesi yksityiskohdat.`
+          : "En löytänyt sopivia osumia nykyisistä ilmoituksista. Kokeile tarkentaa hakua tai väljennä vaatimuksia.");
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
     } catch (err) {
@@ -274,7 +274,7 @@ function AIAdvisor() {
         {
           role: "assistant",
           content:
-            "Sorry, I couldn't generate recommendations right now. Please try again in a minute."
+            "Valitettavasti en pystynyt tuottamaan suosituksia juuri nyt. Yritä hetken kuluttua uudelleen."
         }
       ]);
     } finally {
@@ -294,23 +294,23 @@ function AIAdvisor() {
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Budjettianalyysi</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Budjetti ja omistamisen kustannukset</h3>
             <p className="text-sm text-gray-600">
-              Get recommendations based on your budget and total cost of ownership
+              Saat suosituksia budjettisi ja omistamisen kokonaiskustannusten perusteella
             </p>
           </Card>
 
           <Card>
             <h3 className="font-semibold text-gray-900 mb-2">Perheen tarpeet</h3>
             <p className="text-sm text-gray-600">
-              Find cars that match your family size and lifestyle requirements
+              Löydä autoja, jotka sopivat perheesi kokoon ja elämäntyyliin
             </p>
           </Card>
 
           <Card>
             <h3 className="font-semibold text-gray-900 mb-2">Polttoainetehokkuus</h3>
             <p className="text-sm text-gray-600">
-              Compare fuel types and running costs for your driving habits
+              Vertaa polttoainetyyppejä ja käyttökustannuksia ajotottumustesi perusteella
             </p>
           </Card>
         </div>
@@ -325,12 +325,12 @@ function AIAdvisor() {
           <div className="h-96 overflow-y-auto p-6 bg-gray-50">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 mt-12">
-                <p className="mb-4 text-lg">Start a conversation to get personalized car recommendations!</p>
+                <p className="mb-4 text-lg">Aloita keskustelu saadaksesi henkilökohtaisia autosuosituksia!</p>
                 <div className="text-sm text-gray-400 space-y-2">
-                  <p><strong>Try asking:</strong></p>
-                  <p>"I need a family car under 30000 euros"</p>
-                  <p>"Show me automatic BMWs"</p>
-                  <p>"Looking for a hybrid Toyota"</p>
+                  <p><strong>Esimerkiksi kokeile kysyä:</strong></p>
+                  <p>Tarvitsen alle 30 000 euron perheauton</p>
+                  <p>Näytä minulle automaattivaihteiset BMW:t</p>
+                  <p>Etsin Toyota-hybridiä</p>
                 </div>
               </div>
             ) : (
@@ -354,7 +354,7 @@ function AIAdvisor() {
                 {loading ? (
                   <div className="flex justify-start">
                     <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-900">
-                      Thinking…
+                      Ajattelen…
                     </div>
                   </div>
                 ) : null}
@@ -368,7 +368,7 @@ function AIAdvisor() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about car recommendations... (e.g., 'I need a family car under 30000')"
+                placeholder="Kysy autosuosituksia... (esim. 'Tarvitsen alle 30 000 euron perheauton')"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={loading}
               />

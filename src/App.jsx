@@ -28,9 +28,9 @@ function App() {
 
         <footer className="bg-white border-t">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-500">
-            <p>Aggregating from Saka, Autokeskus, and Kamux</p>
+            <p>Tiedot koottu Saka Autokeskuksesta ja Kamuxista</p>
             <p className="mt-1 text-xs">
-              © 2026 Autotori - Your trusted car aggregator for Finland
+              © 2026 Autotori – Luotettava autojen hakupalvelu Suomessa
             </p>
           </div>
         </footer>
