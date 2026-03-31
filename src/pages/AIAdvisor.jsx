@@ -441,6 +441,13 @@ function AIAdvisor() {
             </p>
           ) : null}
         </div>
+
+        <MobileAdSlot
+          className="mt-6 md:hidden"
+          title="AI Advisor Bottom Ad"
+          subtitle="320x100 mobile banner"
+          tone="amber"
+        />
       </div>
 
       <MobilePopupAd

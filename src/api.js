@@ -32,6 +32,9 @@ export async function submitContactForm(payload) {
   formData.append('phone', payload.phone || '');
   formData.append('inquiryType', payload.inquiryType || 'general_query');
   formData.append('message', payload.message || '');
+  formData.append('acceptedPolicies', String(Boolean(payload.acceptedPolicies)));
+  formData.append('marketingConsent', String(Boolean(payload.marketingConsent)));
+  formData.append('consentVersion', payload.consentVersion || '2026-03-30');
 
   if (payload.companyName) formData.append('companyName', payload.companyName);
   if (payload.adBudget) formData.append('adBudget', payload.adBudget);

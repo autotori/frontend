@@ -133,12 +133,6 @@ function Search() {
 
                         <CarGrid listings={results.items || []} />
 
-                        <MobileAdSlot
-                            className="my-6"
-                            title="Search Feed Ad"
-                            subtitle="Native ad after result cards"
-                            tone="green"
-                        />
 
 
                         {results.totalPages > 1 && (
@@ -148,22 +142,7 @@ function Search() {
                                 onPageChange={handlePageChange}
                             />
                         )}
-
-                        <div className="hidden md:flex justify-center mt-6">
-                            <div
-                                className="bg-green-200 border border-green-500 rounded-xl flex items-center justify-center text-green-900 font-bold text-xl shadow-lg"
-                                style={{ width: 970, height: 90 }}
-                            >
-                                Bottom Banner Ad · 970x90 px
-                            </div>
-                        </div>
-
-                        <MobileAdSlot
-                            className="mt-6"
-                            title="Search Bottom Ad"
-                            subtitle="320x100 mobile banner"
-                            tone="amber"
-                        />
+                      
 
                     </>
                 )}

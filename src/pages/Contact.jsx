@@ -53,10 +53,13 @@ const INITIAL_FORM = {
   adBudget: '',
   campaignTimeline: '',
   adSpaces: [],
-  adFiles: []
+  adFiles: [],
+  acceptedPolicies: false,
+  marketingConsent: false,
+  consentVersion: '2026-03-30'
 };
 
-function Contact() {
+function Contact({ onOpenLegal }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string }
@@ -95,8 +98,8 @@ function Contact() {
   }, [status]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const toggleAdSpace = (value) => {
@@ -149,12 +152,21 @@ function Contact() {
       }
     }
 
+    if (!form.acceptedPolicies) {
+      setStatus({
+        type: 'error',
+        message: 'Hyväksy käyttöehdot ja tietosuojaseloste ennen viestin lähettämistä.'
+      });
+      setSubmitting(false);
+      return;
+    }
+
     try {
       await submitContactForm(form);
-      setStatus({ type: 'success', message: 'Thank you! Your message has been sent.' });
+      setStatus({ type: 'success', message: 'Kiitos! Viestisi on lähetetty.' });
       setForm(INITIAL_FORM);
     } catch (err) {
-      setStatus({ type: 'error', message: err.message || 'Something went wrong. Please try again.' });
+      setStatus({ type: 'error', message: err.message || 'Jokin meni pieleen. Yritä hetken kuluttua uudelleen.' });
     } finally {
       setSubmitting(false);
     }
@@ -218,9 +230,9 @@ function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Location</p>
-                  <p className="text-gray-700">Helsinki, Finland</p>
-                  <p className="text-gray-400 text-xs">Fully remote, serving customers across Finland</p>
+                  <p className="font-medium text-gray-900">Wasala Oy</p>
+                  <p className="text-gray-400 text-xs">Business ID: FI05186668</p>
+                  <p className="text-gray-400 text-xs">Vasantie 43, 90310 Oulu, Finland</p>
                 </div>
               </div>
             </div>
@@ -451,6 +463,36 @@ function Contact() {
                 />
               </div>
 
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 sm:p-4 space-y-3">
+                <label className="flex items-start gap-2.5 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="acceptedPolicies"
+                    checked={form.acceptedPolicies}
+                    onChange={handleChange}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    required
+                  />
+                  <span>
+                    Olen lukenut ja hyväksyn{' '}
+                    <button type="button" onClick={() => onOpenLegal?.('terms')} className="bg-transparent p-0 text-blue-700 underline hover:text-blue-900">käyttöehdot</button>
+                    {', '}
+                    <button type="button" onClick={() => onOpenLegal?.('privacy')} className="bg-transparent p-0 text-blue-700 underline hover:text-blue-900">tietosuojaselosteen</button>.
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-2.5 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="marketingConsent"
+                    checked={form.marketingConsent}
+                    onChange={handleChange}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span>Annan suostumukseni satunnaisiin tuote- ja kampanjapäivityksiin sähköpostitse.</span>
+                </label>
+              </div>
+
               {status && (
                 <div
                   className={`text-sm rounded-lg px-3 py-2 border ${status.type === 'success'
@@ -463,15 +505,13 @@ function Contact() {
               )}
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-                <p className="text-[11px] sm:text-xs text-gray-400 max-w-full sm:max-w-xs">
-                  By sending this form you agree that we may contact you about your request. We do not share your details with third parties.
-                </p>
+               
                 <button
                   type="submit"
                   disabled={submitting}
                   className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-blue-600 px-4 sm:px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {submitting ? 'Sending...' : 'Send message'}
+                  {submitting ? 'Lähetetään...' : 'Lähetä viesti'}
                 </button>
               </div>
             </form>

@@ -28,19 +28,20 @@ function screenshotPath(row) {
 function ScreenshotFrame({ row, deviceKey }) {
     const [imgFailed, setImgFailed] = useState(false);
     const src = screenshotPath(row);
+    const isMobile = deviceKey === "mobile";
 
     useEffect(() => {
         setImgFailed(false);
     }, [src]);
 
     return (
-        <div className="relative rounded-2xl border border-gray-200 bg-gray-100 overflow-hidden shadow-inner">
+        <div className={`relative rounded-2xl border border-gray-200 bg-gray-100 overflow-hidden shadow-inner ${isMobile ? "max-h-[72vh]" : ""}`}>
             {!imgFailed ? (
                 <>
                     <img
                         src={src}
                         alt={`${row.page} ${deviceKey} preview`}
-                        className="block w-full h-auto"
+                        className={`block mx-auto object-contain ${isMobile ? "max-h-[72vh] w-auto max-w-full" : "w-full h-auto"}`}
                         onError={() => setImgFailed(true)}
                     />
                 </>
