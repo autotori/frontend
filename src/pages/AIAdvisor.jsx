@@ -421,6 +421,15 @@ function AIAdvisor() {
           />
         ) : null}
 
+        <div className="hidden md:flex justify-center mt-8">
+          <div
+            className="bg-blue-100 border border-blue-300 rounded-xl flex items-center justify-center text-blue-900 font-semibold text-base shadow-sm"
+            style={{ width: 970, height: 90 }}
+          >
+            Bottom Banner Ad · 970x90 px
+          </div>
+        </div>
+
         <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">
             <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
