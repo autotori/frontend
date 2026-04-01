@@ -12,13 +12,13 @@ export default function Filters({ filters, onChange }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-4">
         {/* Source */}
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Source</label>
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Lähde</label>
           <select
             value={filters.source}
             onChange={(e) => handleChange('source', e.target.value)}
             className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">All Sources</option>
+            <option value="all">Kaikki lähteet</option>
             <option value="saka">Saka</option>
             <option value="autokeskus">Autokeskus</option>
             <option value="kamux">Kamux</option>
@@ -27,24 +27,24 @@ export default function Filters({ filters, onChange }) {
 
         {/* Sort */}
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Sort By</label>
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Järjestä</label>
           <select
             value={filters.sort}
             onChange={(e) => handleChange('sort', e.target.value)}
             className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="relevance">Relevance</option>
-            <option value="price_asc">Price: Low to High</option>
-            <option value="price_desc">Price: High to Low</option>
-            <option value="year_desc">Newest First</option>
-            <option value="mileage_asc">Lowest Mileage</option>
-            <option value="mileage_desc">Highest Mileage</option>
+            <option value="relevance">Osuvuus</option>
+            <option value="price_asc">Hinta: Edullisin ensin</option>
+            <option value="price_desc">Hinta: Kallein ensin</option>
+            <option value="year_desc">Uusin ensin</option>
+            <option value="mileage_asc">Vähiten ajettu</option>
+            <option value="mileage_desc">Eniten ajettu</option>
           </select>
         </div>
 
         {/* Min Price */}
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Min Price (€)</label>
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Minimi hinta (€)</label>
           <input
             type="number"
             value={filters.minPrice}
@@ -72,14 +72,14 @@ export default function Filters({ filters, onChange }) {
         onClick={() => setShowAdvanced(!showAdvanced)}
         className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
       >
-        {showAdvanced ? '− Hide' : '+ Show'} Advanced Filters
+        {showAdvanced ? '− Piilota' : '+ Näytä'} Tarkennetut suodattimet
       </button>
 
       {showAdvanced && (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t">
           {/* Year Range */}
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Min Year</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Vähimmäisvuosi</label>
             <input
               type="number"
               value={filters.minYear}
@@ -89,7 +89,7 @@ export default function Filters({ filters, onChange }) {
             />
           </div>
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Max Year</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Enimmäisvuosi</label>
             <input
               type="number"
               value={filters.maxYear}
@@ -101,7 +101,7 @@ export default function Filters({ filters, onChange }) {
 
           {/* Mileage Range */}
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Min Mileage</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Vähimmäiskilometrimäärä</label>
             <input
               type="number"
               value={filters.minMileage}
@@ -111,7 +111,7 @@ export default function Filters({ filters, onChange }) {
             />
           </div>
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Max Mileage</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Enimmäiskilometrimäärä</label>
             <input
               type="number"
               value={filters.maxMileage}
@@ -123,24 +123,24 @@ export default function Filters({ filters, onChange }) {
 
           {/* Fuel Type */}
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Fuel Type</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Polttoainetyyppi</label>
             <input
               type="text"
               value={filters.fuel}
               onChange={(e) => handleChange('fuel', e.target.value)}
-              placeholder="Diesel, Petrol"
+              placeholder="Diesel, Bensiini"
               className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
           {/* Transmission */}
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Transmission</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">Vaihteisto</label>
             <input
               type="text"
               value={filters.transmission}
               onChange={(e) => handleChange('transmission', e.target.value)}
-              placeholder="Auto, Manual"
+              placeholder="Automaatti, Manuaali"
               className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>

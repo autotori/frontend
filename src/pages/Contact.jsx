@@ -8,11 +8,39 @@ const INQUIRY_OPTIONS = [
 ];
 
 const AD_SPACE_OPTIONS = [
-  { value: 'top_banner_735x435', label: 'Top banner - 735 x 435' },
-  { value: 'homepage_sidebar_300x600', label: 'Homepage sidebar - 300 x 600' },
-  { value: 'search_results_inline_970x250', label: 'Search results inline - 970 x 250' },
-  { value: 'compare_page_footer_728x90', label: 'Compare page footer - 728 x 90' },
-  { value: 'mobile_sticky_footer_320x100', label: 'Mobile sticky footer - 320 x 100' }
+  // Desktop
+  { value: 'home_top_banner_970x250', label: 'Etusivu - Yläbanneri - 970×250 - Desktop' },
+  { value: 'home_top_banner_728x90', label: 'Etusivu - Yläbanneri - 728×90 - Desktop' },
+  { value: 'home_mid_page_728x90', label: 'Etusivu - Keskisivu - 728×90 - Desktop' },
+  { value: 'home_mid_page_300x250', label: 'Etusivu - Keskisivu - 300×250 - Desktop' },
+  { value: 'home_bottom_banner_970x90', label: 'Etusivu - Alabanneri - 970×90 - Desktop' },
+  { value: 'home_feed_ads_300x250', label: 'Etusivu - Feed-mainokset - 300×250 - Kaikki' },
+  { value: 'ai_advisor_top_banner_970x250', label: 'Tekoälyneuvoja - Yläbanneri - 970×250 - Desktop' },
+  { value: 'ai_advisor_bottom_banner_970x90', label: 'Tekoälyneuvoja - Alabanneri - 970×90 - Desktop' },
+  { value: 'ai_comparison_top_banner_970x250', label: 'Vertaa - Yläbanneri - 970×250 - Desktop' },
+  { value: 'ai_comparison_bottom_banner_970x90', label: 'Vertaa - Alabanneri - 970×90 - Desktop' },
+  { value: 'search_top_banner_970x250', label: 'Haku - Yläbanneri - 970×250 - Desktop' },
+  { value: 'search_bottom_banner_970x90', label: 'Haku - Alabanneri - 970×90 - Desktop' },
+  { value: 'search_feed_ads_300x250', label: 'Haku - Feed-mainokset - 300×250 - Kaikki' },
+  { value: 'feed_native_integrated_cards_300x250', label: 'Feed (Native) - Integroitu kortti - 300×250 - Kaikki' },
+  { value: 'feed_native_integrated_cards_336x280', label: 'Feed (Native) - Integroitu kortti - 336×280 - Kaikki' },
+
+  // Mobile
+  { value: 'home_top_banner_200x200', label: 'Etusivu - Yläbanneri - 200×200 - Mobile' },
+  { value: 'home_feed_ads_300x250_mobile', label: 'Etusivu - Feed-mainokset - 300×250 - Mobile' },
+  { value: 'home_feed_ads_336x280_mobile', label: 'Etusivu - Feed-mainokset - 336×280 - Mobile' },
+  { value: 'home_mid_page_200x200', label: 'Etusivu - Keskisivu - 200×200 - Mobile' },
+  { value: 'home_bottom_banner_200x200', label: 'Etusivu - Alabanneri - 200×200 - Mobile' },
+  { value: 'ai_advisor_top_banner_200x200', label: 'Tekoälyneuvoja - Yläbanneri - 200×200 - Mobile' },
+  { value: 'ai_advisor_bottom_banner_200x200', label: 'Tekoälyneuvoja - Alabanneri - 200×200 - Mobile' },
+  { value: 'ai_compare_top_banner_200x200', label: 'Vertaa - Yläbanneri - 200×200 - Mobile' },
+  { value: 'ai_compare_bottom_banner_200x200', label: 'Vertaa - Alabanneri - 200×200 - Mobile' },
+  { value: 'search_top_banner_200x200', label: 'Haku - Yläbanneri - 200×200 - Mobile' },
+  { value: 'search_feed_ads_300x250_mobile', label: 'Haku - Feed-mainokset - 300×250 - Mobile' },
+  { value: 'search_feed_ads_336x280_mobile', label: 'Haku - Feed-mainokset - 336×280 - Mobile' },
+  { value: 'feed_native_integrated_cards_300x250_mobile', label: 'Feed (Native) - Integroitu kortti - 300×250 - Mobile' },
+  { value: 'feed_native_integrated_cards_336x280_mobile', label: 'Feed (Native) - Integroitu kortti - 336×280 - Mobile' },
+  { value: 'popup_center_overlay_200x200', label: 'Popup - Keskioverlay - 200×200 - Mobile' }
 ];
 
 const INITIAL_FORM = {
@@ -25,10 +53,13 @@ const INITIAL_FORM = {
   adBudget: '',
   campaignTimeline: '',
   adSpaces: [],
-  adFiles: []
+  adFiles: [],
+  acceptedPolicies: false,
+  marketingConsent: false,
+  consentVersion: '2026-03-30'
 };
 
-function Contact() {
+function Contact({ onOpenLegal }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string }
@@ -67,8 +98,8 @@ function Contact() {
   }, [status]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const toggleAdSpace = (value) => {
@@ -121,12 +152,21 @@ function Contact() {
       }
     }
 
+    if (!form.acceptedPolicies) {
+      setStatus({
+        type: 'error',
+        message: 'Hyväksy käyttöehdot ja tietosuojaseloste ennen viestin lähettämistä.'
+      });
+      setSubmitting(false);
+      return;
+    }
+
     try {
       await submitContactForm(form);
-      setStatus({ type: 'success', message: 'Thank you! Your message has been sent.' });
+      setStatus({ type: 'success', message: 'Kiitos! Viestisi on lähetetty.' });
       setForm(INITIAL_FORM);
     } catch (err) {
-      setStatus({ type: 'error', message: err.message || 'Something went wrong. Please try again.' });
+      setStatus({ type: 'error', message: err.message || 'Jokin meni pieleen. Yritä hetken kuluttua uudelleen.' });
     } finally {
       setSubmitting(false);
     }
@@ -136,9 +176,14 @@ function Contact() {
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div className="mb-6 sm:mb-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Contact Us</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Ota yhteyttä</h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Have a question, found a bug, or want to advertise with us? Use this single form and we&apos;ll route your request.
+            Onko sinulla kysyttävää, löysitkö virheen vai haluatko mainostaa palvelussamme? Käytä tätä lomaketta, niin ohjaamme pyyntösi oikealle henkilölle.
+          </p>
+          <p className="text-sm text-blue-700 mt-4">
+            <a href="/advertisement-placements" className="underline hover:text-blue-900">
+              Katso kaikki mainospaikat ja hinnat
+            </a>
           </p>
         </div>
 
@@ -185,9 +230,9 @@ function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Location</p>
-                  <p className="text-gray-700">Helsinki, Finland</p>
-                  <p className="text-gray-400 text-xs">Fully remote, serving customers across Finland</p>
+                  <p className="font-medium text-gray-900">Wasala Oy</p>
+                  <p className="text-gray-400 text-xs">Business ID: FI05186668</p>
+                  <p className="text-gray-400 text-xs">Vasantie 43, 90310 Oulu, Finland</p>
                 </div>
               </div>
             </div>
@@ -326,11 +371,10 @@ function Contact() {
                               return (
                                 <label
                                   key={option.value}
-                                  className={`flex items-start gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
-                                    checked
-                                      ? 'border-blue-300 bg-blue-50'
-                                      : 'border-transparent bg-white hover:bg-gray-50'
-                                  }`}
+                                  className={`flex items-start gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${checked
+                                    ? 'border-blue-300 bg-blue-50'
+                                    : 'border-transparent bg-white hover:bg-gray-50'
+                                    }`}
                                 >
                                   <input
                                     type="checkbox"
@@ -419,28 +463,55 @@ function Contact() {
                 />
               </div>
 
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 sm:p-4 space-y-3">
+                <label className="flex items-start gap-2.5 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="acceptedPolicies"
+                    checked={form.acceptedPolicies}
+                    onChange={handleChange}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    required
+                  />
+                  <span>
+                    Olen lukenut ja hyväksyn{' '}
+                    <button type="button" onClick={() => onOpenLegal?.('terms')} className="bg-transparent p-0 text-blue-700 underline hover:text-blue-900">käyttöehdot</button>
+                    {', '}
+                    <button type="button" onClick={() => onOpenLegal?.('privacy')} className="bg-transparent p-0 text-blue-700 underline hover:text-blue-900">tietosuojaselosteen</button>.
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-2.5 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="marketingConsent"
+                    checked={form.marketingConsent}
+                    onChange={handleChange}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span>Annan suostumukseni satunnaisiin tuote- ja kampanjapäivityksiin sähköpostitse.</span>
+                </label>
+              </div>
+
               {status && (
                 <div
-                  className={`text-sm rounded-lg px-3 py-2 border ${
-                    status.type === 'success'
-                      ? 'bg-green-50 border-green-200 text-green-700'
-                      : 'bg-red-50 border-red-200 text-red-700'
-                  }`}
+                  className={`text-sm rounded-lg px-3 py-2 border ${status.type === 'success'
+                    ? 'bg-green-50 border-green-200 text-green-700'
+                    : 'bg-red-50 border-red-200 text-red-700'
+                    }`}
                 >
                   {status.message}
                 </div>
               )}
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-                <p className="text-[11px] sm:text-xs text-gray-400 max-w-full sm:max-w-xs">
-                  By sending this form you agree that we may contact you about your request. We do not share your details with third parties.
-                </p>
+               
                 <button
                   type="submit"
                   disabled={submitting}
                   className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-blue-600 px-4 sm:px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {submitting ? 'Sending...' : 'Send message'}
+                  {submitting ? 'Lähetetään...' : 'Lähetä viesti'}
                 </button>
               </div>
             </form>
