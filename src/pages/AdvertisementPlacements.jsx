@@ -195,7 +195,7 @@ export default function AdvertisementPlacements() {
                         Mainospaikan hinta määräytyy valitun koon, sijainnin ja kampanjan keston mukaan. Voit liittää mainoskuvat ja kertoa budjetista sekä aikataulusta.
                     </p>
                     <p className="text-xs text-blue-700">
-                        Lähetä yhteydenottopyyntö, niin olemme sinuun yhteydessä maksutietojen ja sopimuksen osalta.
+                        Lähetä yhteydenottopyyntö, niin otamme sinuun yhteyttä maksutietojen ja sopimuksen osalta.
                     </p>
                 </div>
             </div>

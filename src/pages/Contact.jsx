@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { submitContactForm } from '../api';
 
 const INQUIRY_OPTIONS = [
-  { value: 'general_query', label: 'General query' },
-  { value: 'bug_report', label: 'Bug report' },
-  { value: 'advertisement', label: 'Advertisement' }
+  { value: 'general_query', label: 'Yleinen kysymys' },
+  { value: 'bug_report', label: 'Virheilmoitus' },
+  { value: 'advertisement', label: 'Haluan mainostaa palvelussanne' },
 ];
 
 const AD_SPACE_OPTIONS = [
@@ -164,6 +164,7 @@ function Contact({ onOpenLegal }) {
     try {
       await submitContactForm(form);
       setStatus({ type: 'success', message: 'Kiitos! Viestisi on lähetetty.' });
+      setStatus({ type: 'success', message: 'Kiitos! Viestisi on lähetetty.' });
       setForm(INITIAL_FORM);
     } catch (err) {
       setStatus({ type: 'error', message: err.message || 'Jokin meni pieleen. Yritä hetken kuluttua uudelleen.' });
@@ -190,9 +191,9 @@ function Contact({ onOpenLegal }) {
         <div className="grid gap-6 lg:gap-8 lg:grid-cols-3 items-start">
           {/* Contact Info */}
           <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 sm:p-6 lg:p-7 lg:col-span-1">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Get in touch</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Ota yhteyttä</h3>
             <p className="text-sm text-gray-600 mb-4">
-              We usually respond within one business day. For urgent matters, you can reach us by phone during office hours.
+              Vastaamme yleensä yhden arkipäivän kuluessa. Kiireellisissä asioissa tavoitat meidät puhelimitse toimistoaikana.
             </p>
 
             <div className="space-y-4 text-sm">
@@ -203,9 +204,9 @@ function Contact({ onOpenLegal }) {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Phone</p>
+                  <p className="font-medium text-gray-900">Puhelin</p>
                   <p className="text-gray-700">+358 40 123 4567</p>
-                  <p className="text-gray-400 text-xs">Mon–Fri, 9:00–17:00 (EET)</p>
+                  <p className="text-gray-400 text-xs">Ma–Pe, 9:00–17:00 (EET)</p>
                 </div>
               </div>
 
@@ -216,9 +217,9 @@ function Contact({ onOpenLegal }) {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Email</p>
+                  <p className="font-medium text-gray-900">Sähköposti</p>
                   <p className="text-gray-700">support@autotori.fi</p>
-                  <p className="text-gray-400 text-xs">We aim to reply within 24 hours</p>
+                  <p className="text-gray-400 text-xs">Pyrimme vastaamaan 24 tunnin kuluessa</p>
                 </div>
               </div>
 
@@ -231,8 +232,8 @@ function Contact({ onOpenLegal }) {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Wasala Oy</p>
-                  <p className="text-gray-400 text-xs">Business ID: FI05186668</p>
-                  <p className="text-gray-400 text-xs">Vasantie 43, 90310 Oulu, Finland</p>
+                  <p className="text-gray-400 text-xs">Y-tunnus: FI05186668 </p>
+                  <p className="text-gray-400 text-xs">Vasantie 43, 90310 Oulu, Suomi</p>
                 </div>
               </div>
             </div>
@@ -240,11 +241,11 @@ function Contact({ onOpenLegal }) {
 
           {/* Contact Form */}
           <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 sm:p-6 lg:p-7 lg:col-span-2">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Send us a message</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Lähetä meille viesti</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Nimi</label>
                   <input
                     type="text"
                     name="name"
@@ -255,7 +256,7 @@ function Contact({ onOpenLegal }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Sähköposti</label>
                   <input
                     type="email"
                     name="email"
@@ -269,7 +270,7 @@ function Contact({ onOpenLegal }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Puhelin (valinnainen)</label>
                   <input
                     type="tel"
                     name="phone"
@@ -279,7 +280,7 @@ function Contact({ onOpenLegal }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Subject</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Aihe</label>
                   <select
                     name="inquiryType"
                     value={form.inquiryType}
@@ -298,11 +299,11 @@ function Contact({ onOpenLegal }) {
 
               {isAdvertisementInquiry && (
                 <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-3 sm:p-4 space-y-4">
-                  <h4 className="text-sm sm:text-base font-semibold text-blue-900">Advertisement Details</h4>
+                  <h4 className="text-sm sm:text-base font-semibold text-blue-900">Mainostuksen tiedot</h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Yrityksen nimi</label>
                       <input
                         type="text"
                         name="companyName"
@@ -310,37 +311,37 @@ function Contact({ onOpenLegal }) {
                         onChange={handleChange}
                         required={isAdvertisementInquiry}
                         className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                        placeholder="Your company name"
+                        placeholder="Yrityksen nimi"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Estimated Budget (optional)</label>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Arvioitu budjetti (valinnainen)</label>
                       <input
                         type="text"
                         name="adBudget"
                         value={form.adBudget}
                         onChange={handleChange}
                         className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                        placeholder="e.g. €1,000 - €3,000"
+                        placeholder="esim. 1 000 € – 3 000 €"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Campaign Timeline (optional)</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Kampanjan aikataulu (valinnainen)</label>
                     <input
                       type="text"
                       name="campaignTimeline"
                       value={form.campaignTimeline}
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                      placeholder="e.g. 1 May 2026 - 30 June 2026"
+                      placeholder="esim. 1.5.2026 – 30.6.2026"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Advertisement Space (select one or more)</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Mainospaikka (valitse yksi tai useampi)</label>
 
                     <div className="relative" ref={adSpaceDropdownRef}>
                       <button
@@ -350,8 +351,8 @@ function Contact({ onOpenLegal }) {
                       >
                         <span>
                           {selectedAdSpaces.length > 0
-                            ? `${selectedAdSpaces.length} space(s) selected`
-                            : 'Choose advertisement spaces'}
+                            ? `${selectedAdSpaces.length} valittu`
+                            : 'Valitse mainospaikat'}
                         </span>
                         <svg
                           className={`w-4 h-4 text-gray-500 transition-transform ${adSpaceDropdownOpen ? 'rotate-180' : ''}`}
@@ -392,7 +393,7 @@ function Contact({ onOpenLegal }) {
                     </div>
 
                     <div className="mt-3">
-                      <p className="text-[11px] sm:text-xs font-medium text-gray-500 mb-1.5">Selected spaces</p>
+                      <p className="text-[11px] sm:text-xs font-medium text-gray-500 mb-1.5">Valitut paikat</p>
 
                       {selectedAdSpaces.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
@@ -410,13 +411,13 @@ function Contact({ onOpenLegal }) {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-[11px] sm:text-xs text-gray-400">No advertisement space selected yet.</p>
+                        <p className="text-[11px] sm:text-xs text-gray-400">Ei mainospaikkaa valittuna.</p>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Upload Ad Creative (optional, multiple images)</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Lataa mainoskuva (valinnainen, useita kuvia)</label>
                     <input
                       type="file"
                       name="adFiles"
@@ -443,7 +444,7 @@ function Contact({ onOpenLegal }) {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-[11px] sm:text-xs text-gray-400">No image uploaded yet.</p>
+                        <p className="text-[11px] sm:text-xs text-gray-400">Kuvia ei ole vielä ladattu.</p>
                       )}
                     </div>
                   </div>
@@ -451,7 +452,7 @@ function Contact({ onOpenLegal }) {
               )}
 
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Message</label>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Viesti</label>
                 <textarea
                   name="message"
                   rows={5}
@@ -459,7 +460,7 @@ function Contact({ onOpenLegal }) {
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                  placeholder="Tell us how we can help..."
+                  placeholder="Kerro, miten voimme auttaa..."
                 />
               </div>
 
@@ -505,7 +506,7 @@ function Contact({ onOpenLegal }) {
               )}
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-               
+
                 <button
                   type="submit"
                   disabled={submitting}

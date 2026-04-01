@@ -11,7 +11,7 @@ function About() {
                     <div className="prose max-w-none">
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Missiomme</h3>
                         <p className="text-gray-700 mb-6">
-                            Autotori is a comprehensive car aggregator platform designed to simplify your car buying
+                            Autotori on kattava autojen hakualusta, joka on suunniteltu helpottamaan autonostokokemustasi Suomessa. Keräämme ja yhtenäistämme ilmoituksia useista luotettavista lähteistä, jolloin pääset tutustumaan tuhansiin autoihin yhdellä kätevällä sivustolla.
                             experience in Finland. We collect and normalize listings from multiple trusted sources,
                             giving you access to thousands of cars in one convenient location.
                         </p>
@@ -21,35 +21,35 @@ function About() {
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <h4 className="font-semibold text-gray-900 mb-1">Edistynyt haku</h4>
                                 <p className="text-sm text-gray-600">
-                                    Filter by price, brand, model, mileage, fuel type, transmission, and more
+                                    Suodata hinnan, merkin, mallin, ajokilometrien, polttoainetyypin, vaihteiston ja muiden tekijöiden mukaan
                                 </p>
                             </div>
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <h4 className="font-semibold text-gray-900 mb-1">Vertaa autoja</h4>
                                 <p className="text-sm text-gray-600">
-                                    Compare multiple vehicles side-by-side to make informed decisions
+                                    Vertaa useita ajoneuvoja rinnakkain, jotta voit tehdä perustellun päätöksen
                                 </p>
                             </div>
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <h4 className="font-semibold text-gray-900 mb-1">Tekoälyn suositukset</h4>
                                 <p className="text-sm text-gray-600">
-                                    Get personalized suggestions based on your budget, needs, and preferences
+                                    Saat henkilökohtaisia ehdotuksia budjettisi, tarpeidesi ja mieltymystesi perusteella.
                                 </p>
                             </div>
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <h4 className="font-semibold text-gray-900 mb-1">Reaaliaikaiset päivitykset</h4>
                                 <p className="text-sm text-gray-600">
-                                    Access the latest listings with near real-time data synchronization
+                                    Pääset käsiksi uusimpiin ilmoituksiin lähes reaaliaikaisen tietojen synkronoinnin ansiosta
                                 </p>
                             </div>
                         </div>
 
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Tietolähteet</h3>
                         <p className="text-gray-700 mb-4">
-                            We aggregate car listings from trusted Finnish automotive platforms:
+                            Keräämme autotarjouksia luotettavilta suomalaisilta autoalustoilta:
                         </p>
                         <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
                             <li><strong>Saka</strong> – Laadukkaat käytetyt autot</li>
@@ -59,20 +59,20 @@ function About() {
 
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Tietosuoja & vaatimustenmukaisuus</h3>
                         <p className="text-gray-700 mb-4">
-                            We respect your privacy and comply with all relevant regulations:
+                            Kunnioitamme yksityisyyttäsi ja noudatamme kaikkia asiaankuuluvia määräyksiä:
                         </p>
                         <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
-                            <li>We only store normalized summary data</li>
-                            <li>No images or full marketing text are stored permanently</li>
-                            <li>All searches redirect you to the original seller's website</li>
-                            <li>We implement rate limiting to respect source APIs</li>
-                            <li>Listings are automatically removed upon takedown requests</li>
+                            <li>Tallennamme vain tavanomaisia yhteenvetotietoja</li>
+                            <li>Kuvia tai markkinointitekstejä ei tallenneta pysyvästi</li>
+                            <li>Kaikki haut ohjaavat sinut alkuperäisen myyjän verkkosivustolle</li>
+                            <li>Käytämme rajoituksia lähde-API:n kuormituksen hallitsemiseksi</li>
+                            <li>Ilmoitukset poistetaan automaattisesti poistopyyntöjen perusteella</li>
                         </ul>
 
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Yhteystiedot & tuki</h3>
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                             <p className="text-gray-700 mb-2">
-                                Have questions or feedback? We'd love to hear from you!
+                                Onko sinulla kysymyksiä tai palautetta? Otamme mielellämme vastaan palautetta!
                             </p>
                             <p className="text-sm text-gray-600">
                                 Email: <span className="font-medium">contact@autotori.fi</span>
@@ -86,7 +86,7 @@ function About() {
 
                 <div className="bg-white rounded-xl shadow-md p-6 text-center">
                     <p className="text-sm text-gray-600">
-                        © 2026 Autotori. All rights reserved. | Built for car buyers in Finland
+                        © 2026 Autotori. Kaikki oikeudet pidätetään. Suunniteltu autonostajille Suomessa
                     </p>
                 </div>
             </div>

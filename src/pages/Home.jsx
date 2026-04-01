@@ -128,10 +128,10 @@ function Home() {
                 {/* Hero Content */}
                 <div className="relative h-full flex flex-col items-center justify-center text-center px-5 sm:px-6">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 max-w-5xl leading-tight">
-                        Finland's smartest car aggregator platform
+                        Suomen älykkäin autojen vertailualusta
                     </h1>
                     <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-3xl leading-relaxed">
-                        Search thousands of quality cars from multiple trusted dealers. Find your perfect car with AI-powered recommendations!
+                        Hae tuhansia laadukkaita autoja useilta luotettavilta jälleenmyyjiltä. Löydä täydellinen autosi tekoälypohjaisten suositusten avulla!
                     </p>
 
                     <Link
@@ -160,10 +160,10 @@ function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-10 sm:mb-14 md:mb-20">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
-                            Why Choose Autotori?
+                            Miksi valita Autotori?
                         </h2>
                         <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
-                            Experience the most comprehensive and intelligent car search platform in Finland
+                            Koe Suomen kattavin ja älykkäin autohakualusta
                         </p>
                     </div>
 
@@ -181,7 +181,7 @@ function Home() {
                                     Useita lähteitä
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
-                                    Search across <span className="font-semibold text-gray-800">Kamux, Autokeskus, and Saka</span> all in one place. Thousands of cars at your fingertips.
+                                    Hae <span className="font-semibold text-gray-800">Kamuxin, Autokeskuksen ja Sakan</span> valikoimista yhdellä haulla. Tuhansia autoja ulottuvillasi.
                                 </p>
                                 <div className="flex items-center text-blue-600 font-semibold group-hover:translate-x-2 transition-transform">
                                 </div>
@@ -201,7 +201,7 @@ function Home() {
                                     Tekoälyn suositukset
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
-                                    Get <span className="font-semibold text-gray-800">personalized suggestions</span> based on your budget, needs, and driving habits with our AI advisor.
+                                    Saat <span className="font-semibold text-gray-800">henkilökohtaiset suositukset</span> budjettisi, tarpeidesi ja ajotottumustesi perusteella tekoälyneuvojan avulla.
                                 </p>
                                 <div className="flex items-center text-purple-600 font-semibold group-hover:translate-x-2 transition-transform">
                                 </div>
@@ -221,7 +221,7 @@ function Home() {
                                     Vertaa autoja
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg mb-6">
-                                    <span className="font-semibold text-gray-800">Side-by-side comparison</span> of specs, prices, and features. Make informed decisions with detailed comparisons.
+                                    <span className="font-semibold text-gray-800">Vertaa ominaisuuksia, hintoja ja varusteita rinnakkain.</span> Tee harkittuja päätöksiä yksityiskohtaisten vertailujen avulla.
                                 </p>
                                 <div className="flex items-center text-green-600 font-semibold group-hover:translate-x-2 transition-transform">
                                 </div>
@@ -249,12 +249,12 @@ function Home() {
                     </div>
 
                     <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                        Ready to find your
-                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-400">dream car?</span>
+                        Oletko valmis löytämään
+                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-400">unelmiesi auton?</span>
                     </h2>
 
                     <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">
-                        Start your search now and discover the perfect vehicle for your needs. Join thousands of satisfied car buyers!
+                        Aloita haku nyt ja löydä tarpeisiisi sopiva auto. Liity tuhansien tyytyväisten autonostajien joukkoon!
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -325,7 +325,7 @@ function Home() {
                             />
                             <CarSection
                                 title="Electric Cars"
-                                description="Eco-friendly and efficient vehicles for the future"
+                                description="Ympäristöystävälliset ja tehokkaat ajoneuvot tulevaisuutta varten"
                                 link="/search?fuel=electric"
                                 scrollRef={electricScrollRef}
                                 scroll={scroll}
@@ -349,7 +349,7 @@ function Home() {
                             />
                             <CarSection
                                 title="Hybrid Cars"
-                                description="Best of both worlds - efficiency meets performance"
+                                description="Parasta molemmista maailmoista – tehokkuus ja suorituskyky kohtaavat"
                                 link="/search?fuel=hybrid"
                                 scrollRef={hybridScrollRef}
                                 scroll={scroll}
@@ -359,7 +359,7 @@ function Home() {
                             />
                             <CarSection
                                 title="Family Cars"
-                                description="Spacious, comfortable, and perfect for adventures"
+                                description="Tilava, mukava ja täydellinen seikkailuihin"
                                 link="/search"
                                 scrollRef={familyScrollRef}
                                 scroll={scroll}
@@ -369,7 +369,7 @@ function Home() {
                             />
                             <CarSection
                                 title="Sport Cars"
-                                description="Unleash the power - performance and style combined"
+                                description="Vapauta voima – suorituskyky ja tyyli yhdistyvät"
                                 link="/search"
                                 scrollRef={sportScrollRef}
                                 scroll={scroll}

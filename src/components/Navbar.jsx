@@ -17,7 +17,7 @@ function Navbar() {
         { path: '/compare', label: 'Vertaa' },
         { path: '/ai-advisor', label: 'Tekoälyneuvoja' },
         { path: '/about', label: 'Tietoa' },
-        { path: '/contact', label: 'Contact' }
+        { path: '/contact', label: 'Yhteystiedot' }
     ];
 
     const isActive = (path) => {
