@@ -4,8 +4,7 @@ import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
 import CarGrid from '../components/CarGrid';
 import Pagination from '../components/Pagination';
-import MobileAdSlot from '../components/MobileAdSlot';
-import MobilePopupAd from '../components/MobilePopupAd';
+
 
 
 function Search() {
@@ -105,21 +104,7 @@ function Search() {
 
                 {!loading && results && (
                     <>
-                        {/* Top Banner Ad Placeholder (Desktop only) */}
-                        <div className="hidden md:flex justify-center mb-8">
-                            <div className="bg-blue-200 border border-blue-400 rounded-xl flex items-center justify-center text-blue-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 250 }}>
-                                Top Banner Ad<br />
-                                970x250 px (Billboard)
-                                <div className="text-xs font-normal mt-2">Position: Above all results | Engagement: Highest conversion</div>
-                            </div>
-                        </div>
 
-                        <MobileAdSlot
-                            className="mb-5"
-                            title="Search Top Ad"
-                            subtitle="320x100 mobile banner"
-                            tone="blue"
-                        />
 
                         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <div className="text-xs sm:text-sm text-gray-600">
@@ -142,7 +127,7 @@ function Search() {
                                 onPageChange={handlePageChange}
                             />
                         )}
-                      
+
 
                     </>
                 )}
@@ -158,11 +143,7 @@ function Search() {
                 )}
             </div>
 
-            <MobilePopupAd
-                storageKey="popup-ad-search"
-                title="Sponsored Listing Boost"
-                description="This mobile popup ad can be closed, similar to common websites."
-            />
+
 
         </div>
     );

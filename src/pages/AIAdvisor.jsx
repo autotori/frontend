@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import MobileAdSlot from '../components/MobileAdSlot';
-import MobilePopupAd from '../components/MobilePopupAd';
+
 
 
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
@@ -294,21 +293,7 @@ function AIAdvisor() {
           <p className="text-gray-600">Saat yksilöllisiä autosuosituksia tarpeidesi mukaan</p>
         </div>
 
-        {/* Top Banner Ad Placeholder (Desktop only) */}
-        <div className="hidden md:flex justify-center mb-8">
-          <div className="bg-blue-200 border border-blue-400 rounded-xl flex items-center justify-center text-blue-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 250 }}>
-            Top Banner Ad<br />
-            970x250 px (Billboard)
-            <div className="text-xs font-normal mt-2">Position: Above personalized recommendations | Engagement: Premium placement</div>
-          </div>
-        </div>
 
-        <MobileAdSlot
-          className="mb-6"
-          title="AI Advisor Top Ad"
-          subtitle="320x100 mobile banner"
-          tone="blue"
-        />
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
@@ -346,8 +331,8 @@ function AIAdvisor() {
                 <p className="mb-4 text-lg">Aloita keskustelu saadaksesi henkilökohtaisia autosuosituksia!</p>
                 <div className="text-sm text-gray-400 space-y-2">
                   <p><strong>Esimerkiksi kokeile kysyä:</strong></p>
-                    <p>Tarvitsen alle 30 000 euron perheauton, jossa on iso tavaratila, hyvä turvallisuustaso ja kohtuulliset käyttökustannukset.</p>
-                    <p>Etsin Toyota-hybridiä tai muuta automaattivaihteista, vähän kuluttavaa autoa pääasiassa kaupunki- ja työmatka-ajoihin.</p>
+                  <p>Tarvitsen alle 30 000 euron perheauton, jossa on iso tavaratila, hyvä turvallisuustaso ja kohtuulliset käyttökustannukset.</p>
+                  <p>Etsin Toyota-hybridiä tai muuta automaattivaihteista, vähän kuluttavaa autoa pääasiassa kaupunki- ja työmatka-ajoihin.</p>
                 </div>
               </div>
             ) : (
@@ -411,23 +396,9 @@ function AIAdvisor() {
 
         {aiResult ? <PicksPanel data={aiResult} /> : null}
 
-        {aiResult ? (
-          <MobileAdSlot
-            className="mt-6"
-            title="Recommendations Inline Ad"
-            subtitle="300x250 mobile card"
-            tone="green"
-          />
-        ) : null}
 
-        <div className="hidden md:flex justify-center mt-8">
-          <div
-            className="bg-blue-100 border border-blue-300 rounded-xl flex items-center justify-center text-blue-900 font-semibold text-base shadow-sm"
-            style={{ width: 970, height: 90 }}
-          >
-            Bottom Banner Ad · 970x90 px
-          </div>
-        </div>
+
+
 
         <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">
@@ -441,19 +412,10 @@ function AIAdvisor() {
           ) : null}
         </div>
 
-        <MobileAdSlot
-          className="mt-6 md:hidden"
-          title="AI Advisor Bottom Ad"
-          subtitle="320x100 mobile banner"
-          tone="amber"
-        />
+
       </div>
 
-      <MobilePopupAd
-        storageKey="popup-ad-ai-advisor"
-        title="Sponsored AI Match"
-        description="Mobile popup ad example. Tap close to return to the advisor."
-      />
+
     </div>
   );
 }
