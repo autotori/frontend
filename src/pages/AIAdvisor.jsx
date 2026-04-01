@@ -328,9 +328,8 @@ function AIAdvisor() {
                 <p className="mb-4 text-lg">Aloita keskustelu saadaksesi henkilökohtaisia autosuosituksia!</p>
                 <div className="text-sm text-gray-400 space-y-2">
                   <p><strong>Esimerkiksi kokeile kysyä:</strong></p>
-                  <p>Tarvitsen alle 30 000 euron perheauton</p>
-                  <p>Näytä minulle automaattivaihteiset BMW:t</p>
-                  <p>Etsin Toyota-hybridiä</p>
+                    <p>Tarvitsen alle 30 000 euron perheauton, jossa on iso tavaratila, hyvä turvallisuustaso ja kohtuulliset käyttökustannukset.</p>
+                    <p>Etsin Toyota-hybridiä tai muuta automaattivaihteista, vähän kuluttavaa autoa pääasiassa kaupunki- ja työmatka-ajoihin.</p>
                 </div>
               </div>
             ) : (
