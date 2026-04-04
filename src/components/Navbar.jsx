@@ -17,6 +17,7 @@ function Navbar() {
         { path: '/compare', label: 'Vertaa' },
         { path: '/ai-advisor', label: 'Tekoälyneuvoja' },
         { path: '/about', label: 'Tietoa' },
+        { path: '/advertisement-placements', label: 'Mainosta meillä' },
         { path: '/contact', label: 'Yhteystiedot' }
     ];
 
@@ -76,7 +77,7 @@ function Navbar() {
 
             {/* Mobile Menu */}
             <div
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? 'max-h-80 border-t border-gray-200' : 'max-h-0'
+                className={`md:hidden transition-all duration-300 ease-in-out ${mobileOpen ? 'max-h-[calc(100vh-56px)] overflow-y-auto border-t border-gray-200' : 'max-h-0 overflow-hidden'
                     }`}
             >
                 <div className="px-4 py-3 space-y-1 bg-white">

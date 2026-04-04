@@ -191,7 +191,7 @@ function Contact({ onOpenLegal }) {
         <div className="grid gap-6 lg:gap-8 lg:grid-cols-3 items-start">
           {/* Contact Info */}
           <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 sm:p-6 lg:p-7 lg:col-span-1">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Ota yhteyttä</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Yhteystiedot</h3>
             <p className="text-sm text-gray-600 mb-4">
               Vastaamme yleensä yhden arkipäivän kuluessa. Kiireellisissä asioissa tavoitat meidät puhelimitse toimistoaikana.
             </p>
