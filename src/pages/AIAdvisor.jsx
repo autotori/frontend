@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
-import MobileAdSlot from '../components/MobileAdSlot';
-import MobilePopupAd from '../components/MobilePopupAd';
-
 
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://localhost:3001";
 
 function formatEur(n) {
   if (n == null || !Number.isFinite(Number(n))) return "—";
-  return new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR" }).format(Number(n));
+  return new Intl.NumberFormat("fi-FI", {
+    style: "currency",
+    currency: "EUR",
+  }).format(Number(n));
 }
 
 function formatKm(n) {
@@ -23,7 +23,9 @@ function titleCaseWord(w) {
 function extractBudgetEur(text) {
   const m = text
     .replace(/\s/g, "")
-    .match(/(?:€|eur|euro|euros)?(\d{2,3}(?:[.,]\d{3})+|\d{4,6})(?:€|eur|euro|euros)?/i);
+    .match(
+      /(?:€|eur|euro|euros)?(\d{2,3}(?:[.,]\d{3})+|\d{4,6})(?:€|eur|euro|euros)?/i,
+    );
   if (!m) return null;
 
   const raw = m[1].replace(/\./g, "").replace(/,/g, "");
@@ -33,27 +35,58 @@ function extractBudgetEur(text) {
 
 function guessTransmission(text) {
   const t = text.toLowerCase();
-  if (t.includes("auto") || t.includes("automatic") || t.includes("automaatti")) return "Automaatti";
+  if (t.includes("auto") || t.includes("automatic") || t.includes("automaatti"))
+    return "Automaatti";
   if (t.includes("manual") || t.includes("manuaali")) return "Manuaali";
   return null;
 }
 
 function guessFuel(text) {
   const t = text.toLowerCase();
-  if (t.includes("electric") || t.includes("ev") || t.includes("sähkö")) return "Sähkö";
+  if (t.includes("electric") || t.includes("ev") || t.includes("sähkö"))
+    return "Sähkö";
   if (t.includes("hybrid") || t.includes("hybridi")) return "Hybrid";
   if (t.includes("diesel")) return "Diesel";
-  if (t.includes("petrol") || t.includes("bensiini") || t.includes("gasoline")) return "Bensiini";
+  if (t.includes("petrol") || t.includes("bensiini") || t.includes("gasoline"))
+    return "Bensiini";
   return null;
 }
 
 // Common car makes to look for in text
 const CAR_MAKES = [
-  "toyota", "volkswagen", "vw", "bmw", "mercedes", "audi", "volvo",
-  "ford", "honda", "nissan", "mazda", "skoda", "kia", "hyundai",
-  "peugeot", "renault", "citroen", "seat", "opel", "tesla", "lexus",
-  "porsche", "land rover", "range rover", "jaguar", "mini", "fiat",
-  "alfa romeo", "jeep", "subaru", "mitsubishi", "suzuki", "dacia"
+  "toyota",
+  "volkswagen",
+  "vw",
+  "bmw",
+  "mercedes",
+  "audi",
+  "volvo",
+  "ford",
+  "honda",
+  "nissan",
+  "mazda",
+  "skoda",
+  "kia",
+  "hyundai",
+  "peugeot",
+  "renault",
+  "citroen",
+  "seat",
+  "opel",
+  "tesla",
+  "lexus",
+  "porsche",
+  "land rover",
+  "range rover",
+  "jaguar",
+  "mini",
+  "fiat",
+  "alfa romeo",
+  "jeep",
+  "subaru",
+  "mitsubishi",
+  "suzuki",
+  "dacia",
 ];
 
 function extractCarMake(text) {
@@ -63,7 +96,10 @@ function extractCarMake(text) {
   for (const make of CAR_MAKES) {
     if (lower.includes(make)) {
       // Return title-cased version
-      return make.split(' ').map(w => titleCaseWord(w)).join(' ');
+      return make
+        .split(" ")
+        .map((w) => titleCaseWord(w))
+        .join(" ");
     }
   }
 
@@ -97,7 +133,8 @@ function extractSearchQuery(text) {
   // Look for size/type keywords
   if (lower.includes("suv")) keywords.push("SUV");
   if (lower.includes("sedan")) keywords.push("sedan");
-  if (lower.includes("wagon") || lower.includes("estate")) keywords.push("wagon");
+  if (lower.includes("wagon") || lower.includes("estate"))
+    keywords.push("wagon");
   if (lower.includes("hatchback")) keywords.push("hatchback");
   if (lower.includes("van") || lower.includes("family")) keywords.push("van");
   if (lower.includes("sport")) keywords.push("sport");
@@ -116,7 +153,10 @@ function Card({ children }) {
 }
 
 function ListingCard({ listing, highlight }) {
-  const title = listing?.title || `${listing?.make || ""} ${listing?.model || ""}`.trim() || "Listing";
+  const title =
+    listing?.title ||
+    `${listing?.make || ""} ${listing?.model || ""}`.trim() ||
+    "Listing";
   const href = listing?.listingUrl || "#";
 
   return (
@@ -124,13 +164,18 @@ function ListingCard({ listing, highlight }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`block rounded-xl border bg-white hover:shadow-md transition ${highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
-        }`}
+      className={`block rounded-xl border bg-white hover:shadow-md transition ${
+        highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-gray-200"
+      }`}
     >
       <div className="flex gap-4 p-4">
         <div className="w-28 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
           {listing?.thumbnailUrl ? (
-            <img src={listing.thumbnailUrl} alt={title} className="w-full h-full object-cover" />
+            <img
+              src={listing.thumbnailUrl}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
           ) : (
             <span className="text-xs text-gray-400">No image</span>
           )}
@@ -166,7 +211,9 @@ function PicksPanel({ data }) {
     <div className="mt-6">
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="font-semibold text-gray-900">Suositukset</h3>
-        {summary ? <p className="text-sm text-gray-700 mt-2">{summary}</p> : null}
+        {summary ? (
+          <p className="text-sm text-gray-700 mt-2">{summary}</p>
+        ) : null}
 
         {picks.length === 0 ? (
           <p className="text-sm text-gray-500 mt-3">No picks returned.</p>
@@ -175,7 +222,10 @@ function PicksPanel({ data }) {
             {picks.map((p, i) => {
               const listing = p?.listing || {};
               return (
-                <div key={p.listingUrl || i} className="rounded-xl border border-gray-200 overflow-hidden">
+                <div
+                  key={p.listingUrl || i}
+                  className="rounded-xl border border-gray-200 overflow-hidden"
+                >
                   <div className="p-4 bg-gray-50 border-b border-gray-200">
                     <div className="flex items-center justify-between gap-3">
                       <div className="font-semibold text-gray-900">
@@ -187,10 +237,12 @@ function PicksPanel({ data }) {
                     </div>
                     <div className="mt-2 text-sm text-gray-700">
                       <div>
-                        <span className="font-semibold">Perustelut:</span> {p.why}
+                        <span className="font-semibold">Perustelut:</span>{" "}
+                        {p.why}
                       </div>
                       <div className="mt-1">
-                        <span className="font-semibold">Huomioitavaa:</span> {p.tradeoffs}
+                        <span className="font-semibold">Huomioitavaa:</span>{" "}
+                        {p.tradeoffs}
                       </div>
                     </div>
                   </div>
@@ -247,8 +299,8 @@ function AIAdvisor() {
           q,
           filters,
           preferences: {},
-          maxPicks: 5
-        })
+          maxPicks: 5,
+        }),
       });
 
       const json = await res.json();
@@ -268,7 +320,10 @@ function AIAdvisor() {
           ? `Löysin ${data.picks.length} hyvää vaihtoehtoa. Selaa alaspäin nähdäksesi yksityiskohdat.`
           : "En löytänyt sopivia osumia nykyisistä ilmoituksista. Kokeile tarkentaa hakua tai väljennä vaatimuksia.");
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantText },
+      ]);
     } catch (err) {
       setError(err?.message || "Something went wrong");
       setMessages((prev) => [
@@ -276,8 +331,8 @@ function AIAdvisor() {
         {
           role: "assistant",
           content:
-            "Valitettavasti en pystynyt tuottamaan suosituksia juuri nyt. Yritä hetken kuluttua uudelleen."
-        }
+            "Valitettavasti en pystynyt tuottamaan suosituksia juuri nyt. Yritä hetken kuluttua uudelleen.",
+        },
       ]);
     } finally {
       setLoading(false);
@@ -286,49 +341,43 @@ function AIAdvisor() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
-
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Tekoälyautoneuvoja</h2>
-          <p className="text-gray-600">Saat yksilöllisiä autosuosituksia tarpeidesi mukaan</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Tekoälyautoneuvoja
+          </h2>
+          <p className="text-gray-600">
+            Saat yksilöllisiä autosuosituksia tarpeidesi mukaan
+          </p>
         </div>
-
-        {/* Top Banner Ad Placeholder (Desktop only) */}
-        <div className="hidden md:flex justify-center mb-8">
-          <div className="bg-blue-200 border border-blue-400 rounded-xl flex items-center justify-center text-blue-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 250 }}>
-            Top Banner Ad<br />
-            970x250 px (Billboard)
-            <div className="text-xs font-normal mt-2">Position: Above personalized recommendations | Engagement: Premium placement</div>
-          </div>
-        </div>
-
-        <MobileAdSlot
-          className="mb-6"
-          title="AI Advisor Top Ad"
-          subtitle="320x100 mobile banner"
-          tone="blue"
-        />
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Budjetti ja omistamisen kustannukset</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">
+              Budjetti ja omistamisen kustannukset
+            </h3>
             <p className="text-sm text-gray-600">
-              Saat suosituksia budjettisi ja omistamisen kokonaiskustannusten perusteella
+              Saat suosituksia budjettisi ja omistamisen kokonaiskustannusten
+              perusteella
             </p>
           </Card>
 
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Perheen tarpeet</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">
+              Perheen tarpeet
+            </h3>
             <p className="text-sm text-gray-600">
               Löydä autoja, jotka sopivat perheesi kokoon ja elämäntyyliin
             </p>
           </Card>
 
           <Card>
-            <h3 className="font-semibold text-gray-900 mb-2">Polttoainetehokkuus</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">
+              Polttoainetehokkuus
+            </h3>
             <p className="text-sm text-gray-600">
-              Vertaa polttoainetyyppejä ja käyttökustannuksia ajotottumustesi perusteella
+              Vertaa polttoainetyyppejä ja käyttökustannuksia ajotottumustesi
+              perusteella
             </p>
           </Card>
         </div>
@@ -337,17 +386,30 @@ function AIAdvisor() {
 
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-            <h3 className="text-white font-semibold">Keskustele tekoälyneuvojan kanssa</h3>
+            <h3 className="text-white font-semibold">
+              Keskustele tekoälyneuvojan kanssa
+            </h3>
           </div>
 
           <div className="h-96 overflow-y-auto p-6 bg-gray-50">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 mt-12">
-                <p className="mb-4 text-lg">Aloita keskustelu saadaksesi henkilökohtaisia autosuosituksia!</p>
+                <p className="mb-4 text-lg">
+                  Aloita keskustelu saadaksesi henkilökohtaisia autosuosituksia!
+                </p>
                 <div className="text-sm text-gray-400 space-y-2">
-                  <p><strong>Esimerkiksi kokeile kysyä:</strong></p>
-                    <p>Tarvitsen alle 30 000 euron perheauton, jossa on iso tavaratila, hyvä turvallisuustaso ja kohtuulliset käyttökustannukset.</p>
-                    <p>Etsin Toyota-hybridiä tai muuta automaattivaihteista, vähän kuluttavaa autoa pääasiassa kaupunki- ja työmatka-ajoihin.</p>
+                  <p>
+                    <strong>Esimerkiksi kokeile kysyä:</strong>
+                  </p>
+                  <p>
+                    Tarvitsen alle 30 000 euron perheauton, jossa on iso
+                    tavaratila, hyvä turvallisuustaso ja kohtuulliset
+                    käyttökustannukset.
+                  </p>
+                  <p>
+                    Etsin Toyota-hybridiä tai muuta automaattivaihteista, vähän
+                    kuluttavaa autoa pääasiassa kaupunki- ja työmatka-ajoihin.
+                  </p>
                 </div>
               </div>
             ) : (
@@ -358,10 +420,11 @@ function AIAdvisor() {
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.role === "user"
-                        ? "bg-blue-500 text-white"
-                        : "bg-white border border-gray-200 text-gray-900"
-                        }`}
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        msg.role === "user"
+                          ? "bg-blue-500 text-white"
+                          : "bg-white border border-gray-200 text-gray-900"
+                      }`}
                     >
                       {msg.content}
                     </div>
@@ -392,8 +455,11 @@ function AIAdvisor() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`px-6 py-2 rounded-lg transition-colors font-medium ${loading ? "bg-blue-300 text-white cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
-                  }`}
+                className={`px-6 py-2 rounded-lg transition-colors font-medium ${
+                  loading
+                    ? "bg-blue-300 text-white cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
               >
                 Lähetä
               </button>
@@ -410,50 +476,7 @@ function AIAdvisor() {
         ) : null}
 
         {aiResult ? <PicksPanel data={aiResult} /> : null}
-
-        {aiResult ? (
-          <MobileAdSlot
-            className="mt-6"
-            title="Recommendations Inline Ad"
-            subtitle="300x250 mobile card"
-            tone="green"
-          />
-        ) : null}
-
-        <div className="hidden md:flex justify-center mt-8">
-          <div
-            className="bg-blue-100 border border-blue-300 rounded-xl flex items-center justify-center text-blue-900 font-semibold text-base shadow-sm"
-            style={{ width: 970, height: 90 }}
-          >
-            Bottom Banner Ad · 970x90 px
-          </div>
-        </div>
-
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <p className="text-sm text-yellow-800">
-            <span className="font-semibold">Note:</span> This feature uses your aggregated listings as the only source.
-            If listings are missing key details (e.g. service history), the advisor will mention limitations.
-          </p>
-          {lastUserNeed ? (
-            <p className="text-xs text-yellow-700 mt-2">
-              Last need: <span className="font-mono">{lastUserNeed}</span>
-            </p>
-          ) : null}
-        </div>
-
-        <MobileAdSlot
-          className="mt-6 md:hidden"
-          title="AI Advisor Bottom Ad"
-          subtitle="320x100 mobile banner"
-          tone="amber"
-        />
       </div>
-
-      <MobilePopupAd
-        storageKey="popup-ad-ai-advisor"
-        title="Sponsored AI Match"
-        description="Mobile popup ad example. Tap close to return to the advisor."
-      />
     </div>
   );
 }

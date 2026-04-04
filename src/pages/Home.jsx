@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
-import MobileAdSlot from '../components/MobileAdSlot';
-import MobilePopupAd from '../components/MobilePopupAd';
 import {
     MAX_COMPARE_CARS,
     clearCompareSelection,
@@ -376,20 +374,6 @@ function Home() {
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* Main Feed */}
                         <div className="flex-1 min-w-0">
-                            {/* Top Banner Ad Placeholder (Desktop only) */}
-                            <div className="hidden md:flex justify-center mb-8">
-                                <div className="bg-blue-200 border border-blue-400 rounded-xl flex items-center justify-center text-blue-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 250 }}>
-                                    Top Banner Ad<br />
-                                    970×250 px (Billboard) or 728×90 px (Leaderboard)
-                                    <div className="text-xs font-normal mt-2">Position: Above Electric Cars | Impact: Highest visibility</div>
-                                </div>
-                            </div>
-                            <MobileAdSlot
-                                className="mb-6"
-                                title="Homepage Top Ad"
-                                subtitle="320x100 mobile banner"
-                                tone="blue"
-                            />
                             <CarSection
                                 title="Electric Cars"
                                 description="Ympäristöystävälliset ja tehokkaat ajoneuvot tulevaisuutta varten"
@@ -401,20 +385,6 @@ function Home() {
                                 compareUrls={compareUrls}
                                 maxCompare={MAX_COMPARE_CARS}
                                 onToggleCompare={handleToggleCompare}
-                            />
-                            {/* Mid-Page Ad Placeholder (Desktop only) */}
-                            <div className="hidden md:flex justify-center my-8">
-                                <div className="bg-green-200 border border-green-400 rounded-xl flex items-center justify-center text-green-900 font-bold text-lg shadow-lg" style={{ width: 728, height: 90 }}>
-                                    Mid-Page Ad<br />
-                                    728×90 px (Leaderboard) or 300×250 px (Medium Rectangle)
-                                    <div className="text-xs font-normal mt-2">Position: Between Hybrid & Family Cars | Impact: Contextual placement</div>
-                                </div>
-                            </div>
-                            <MobileAdSlot
-                                className="my-6"
-                                title="Homepage Mid Ad"
-                                subtitle="Native mobile in-feed ad"
-                                tone="green"
                             />
                             <CarSection
                                 title="Hybrid Cars"
@@ -452,31 +422,11 @@ function Home() {
                                 maxCompare={MAX_COMPARE_CARS}
                                 onToggleCompare={handleToggleCompare}
                             />
-                            {/* Bottom Banner Ad Placeholder (Desktop only) */}
-                            <div className="hidden md:flex justify-center mt-12">
-                                <div className="bg-yellow-200 border border-yellow-400 rounded-xl flex items-center justify-center text-yellow-900 font-bold text-lg shadow-lg" style={{ width: 970, height: 90 }}>
-                                    Bottom Banner Ad<br />
-                                    970×90 px (Large Leaderboard)
-                                    <div className="text-xs font-normal mt-2">Position: Below Featured Cars | Impact: Extended visibility</div>
-                                </div>
-                            </div>
-                            <MobileAdSlot
-                                className="mt-8"
-                                title="Homepage Bottom Ad"
-                                subtitle="320x100 mobile banner"
-                                tone="amber"
-                            />
                         </div>
                     </div>
 
                 </div>
             </div>
-
-            <MobilePopupAd
-                storageKey="popup-ad-home"
-                title="Featured Partner Offer"
-                description="Demo popup ad on mobile. Users can close and continue browsing."
-            />
 
             {compareNotice && (
                 <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 rounded-full bg-gray-900 text-white px-4 py-2 text-sm shadow-lg">
