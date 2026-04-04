@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { compareWithAI } from '../api/compare';
+import { getCompareSelection } from '../utils/compareSelection';
 import './AICompare.css';
 
 export default function AICompare() {
@@ -7,6 +8,21 @@ export default function AICompare() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const selectedUrls = getCompareSelection()
+      .map((item) => item.listingUrl)
+      .filter((url) => Boolean(url && url.trim()));
+
+    const uniqueSelected = [...new Set(selectedUrls)].slice(0, 5);
+    if (uniqueSelected.length === 0) return;
+
+    const initialUrls = uniqueSelected.length >= 2
+      ? uniqueSelected
+      : [uniqueSelected[0], ''];
+
+    setUrls(initialUrls);
+  }, []);
 
   const addUrlField = () => {
     if (urls.length < 5) {

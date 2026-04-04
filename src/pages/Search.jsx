@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { searchCars } from '../api';
 import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
@@ -6,9 +7,17 @@ import CarGrid from '../components/CarGrid';
 import Pagination from '../components/Pagination';
 import MobileAdSlot from '../components/MobileAdSlot';
 import MobilePopupAd from '../components/MobilePopupAd';
+import {
+    MAX_COMPARE_CARS,
+    clearCompareSelection,
+    getCompareSelection,
+    getCompareSelectionUrls,
+    toggleCompareSelection
+} from '../utils/compareSelection';
 
 
 function Search() {
+    const navigate = useNavigate();
     const [query, setQuery] = useState('');
     const [filters, setFilters] = useState({
         source: 'all',
@@ -30,6 +39,8 @@ function Search() {
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [compareCars, setCompareCars] = useState(() => getCompareSelection());
+    const [compareNotice, setCompareNotice] = useState('');
 
     useEffect(() => {
         performSearch();
@@ -71,6 +82,38 @@ function Search() {
         setPage(newPage);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    const handleToggleCompare = (car) => {
+        const result = toggleCompareSelection(car);
+        setCompareCars(result.selection);
+
+        if (!result.changed) {
+            if (result.reason === 'max-reached') {
+                setCompareNotice(`Voit lisätä vertailuun enintään ${MAX_COMPARE_CARS} autoa.`);
+            } else if (result.reason === 'missing-url') {
+                setCompareNotice('Tätä autoa ei voi lisätä vertailuun ilman ilmoituslinkkiä.');
+            }
+            return;
+        }
+
+        setCompareNotice(result.action === 'added' ? 'Auto lisätty vertailuun.' : 'Auto poistettu vertailusta.');
+    };
+
+    const handleClearCompare = () => {
+        clearCompareSelection();
+        setCompareCars([]);
+        setCompareNotice('Vertailulista tyhjennetty.');
+    };
+
+    const handleOpenCompare = () => {
+        navigate('/compare');
+    };
+
+    useEffect(() => {
+        if (!compareNotice) return;
+        const timer = setTimeout(() => setCompareNotice(''), 2500);
+        return () => clearTimeout(timer);
+    }, [compareNotice]);
 
     return (
         <div className="bg-gray-50 min-h-screen">
@@ -131,7 +174,12 @@ function Search() {
                             </div>
                         </div>
 
-                        <CarGrid listings={results.items || []} />
+                        <CarGrid
+                            listings={results.items || []}
+                            compareUrls={getCompareSelectionUrls()}
+                            maxCompare={MAX_COMPARE_CARS}
+                            onToggleCompare={handleToggleCompare}
+                        />
 
 
 
@@ -163,6 +211,39 @@ function Search() {
                 title="Sponsored Listing Boost"
                 description="This mobile popup ad can be closed, similar to common websites."
             />
+
+            {compareNotice && (
+                <div className="fixed bottom-24 sm:bottom-28 left-1/2 -translate-x-1/2 z-40 bg-gray-900 text-white text-xs sm:text-sm px-4 py-2 rounded-full shadow-lg">
+                    {compareNotice}
+                </div>
+            )}
+
+            {compareCars.length > 0 && (
+                <div className="fixed inset-x-0 bottom-3 sm:bottom-4 z-40 px-3 sm:px-4">
+                    <div className="max-w-7xl mx-auto rounded-2xl border border-blue-200 bg-white/95 backdrop-blur-sm shadow-xl px-3 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3">
+                        <div className="text-xs sm:text-sm text-gray-700">
+                            Vertailussa <span className="font-semibold text-gray-900">{compareCars.length}</span> / {MAX_COMPARE_CARS} autoa
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleClearCompare}
+                                className="px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+                            >
+                                Tyhjennä
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleOpenCompare}
+                                disabled={compareCars.length < 2}
+                                className="px-3 sm:px-4 py-1.5 text-xs sm:text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Vertaa nyt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );

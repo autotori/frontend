@@ -1,15 +1,33 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
 import MobileAdSlot from '../components/MobileAdSlot';
 import MobilePopupAd from '../components/MobilePopupAd';
+import {
+    MAX_COMPARE_CARS,
+    clearCompareSelection,
+    getCompareSelection,
+    getCompareSelectionUrls,
+    toggleCompareSelection
+} from '../utils/compareSelection';
 
 import { searchCars } from '../api';
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1769113528181-1ec33345ba3d?w=1920&q=80&auto=format&fit=crop';
 
 // Car Section Component
-const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources, loading }) => (
+const CarSection = ({
+    title,
+    description,
+    link,
+    scrollRef,
+    scroll,
+    cars,
+    loading,
+    compareUrls,
+    maxCompare,
+    onToggleCompare
+}) => (
     <div className="mb-12 sm:mb-16 md:mb-20">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-5 sm:mb-8 gap-2 sm:gap-4">
             <div className="flex flex-col">
@@ -51,11 +69,23 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
                         <div className="text-gray-400">Ladataan autoja...</div>
                     </div>
                 ) : cars.length > 0 ? (
-                    cars.map((car, idx) => (
-                        <div key={idx} className="flex-none w-[72vw] sm:w-72 md:w-80 snap-start">
-                            <CarCard car={car} source={car.source} />
-                        </div>
-                    ))
+                    cars.map((car, idx) => {
+                        const listingUrl = car?.listingUrl ? String(car.listingUrl).trim() : '';
+                        const isCompared = Boolean(listingUrl) && compareUrls.includes(listingUrl);
+                        const canAddCompare = isCompared || compareUrls.length < maxCompare;
+
+                        return (
+                            <div key={idx} className="flex-none w-[72vw] sm:w-72 md:w-80 snap-start">
+                                <CarCard
+                                    car={car}
+                                    source={car.source}
+                                    isCompared={isCompared}
+                                    canAddCompare={canAddCompare}
+                                    onToggleCompare={onToggleCompare}
+                                />
+                            </div>
+                        );
+                    })
                 ) : (
                     <div className="flex-1 flex items-center justify-center py-12 sm:py-20">
                         <div className="text-gray-400">Ei autoja saatavilla</div>
@@ -67,6 +97,7 @@ const CarSection = ({ title, description, link, scrollRef, scroll, cars, sources
 );
 
 function Home() {
+    const navigate = useNavigate();
     const electricScrollRef = useRef(null);
     const hybridScrollRef = useRef(null);
     const familyScrollRef = useRef(null);
@@ -77,6 +108,8 @@ function Home() {
     const [familyCars, setFamilyCars] = useState([]);
     const [sportCars, setSportCars] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [compareCars, setCompareCars] = useState(() => getCompareSelection());
+    const [compareNotice, setCompareNotice] = useState('');
 
     useEffect(() => {
         fetchAllCars();
@@ -111,6 +144,40 @@ function Home() {
             ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     };
+
+    const handleToggleCompare = (car) => {
+        const result = toggleCompareSelection(car);
+
+        if (!result.changed) {
+            if (result.reason === 'max-reached') {
+                setCompareNotice(`Voit lisätä vertailuun enintään ${MAX_COMPARE_CARS} autoa.`);
+            } else if (result.reason === 'missing-url') {
+                setCompareNotice('Tätä autoa ei voi lisätä vertailuun ilman ilmoituslinkkiä.');
+            }
+            return;
+        }
+
+        setCompareCars(result.selection);
+        setCompareNotice(result.action === 'added' ? 'Auto lisätty vertailuun.' : 'Auto poistettu vertailusta.');
+    };
+
+    const handleClearCompare = () => {
+        clearCompareSelection();
+        setCompareCars([]);
+        setCompareNotice('Vertailulista tyhjennetty.');
+    };
+
+    const handleOpenCompare = () => {
+        navigate('/compare');
+    };
+
+    useEffect(() => {
+        if (!compareNotice) return;
+        const timer = setTimeout(() => setCompareNotice(''), 2500);
+        return () => clearTimeout(timer);
+    }, [compareNotice]);
+
+    const compareUrls = getCompareSelectionUrls();
 
 
     return (
@@ -331,7 +398,9 @@ function Home() {
                                 scroll={scroll}
                                 cars={electricCars}
                                 loading={loading}
-                                adType="feed"
+                                compareUrls={compareUrls}
+                                maxCompare={MAX_COMPARE_CARS}
+                                onToggleCompare={handleToggleCompare}
                             />
                             {/* Mid-Page Ad Placeholder (Desktop only) */}
                             <div className="hidden md:flex justify-center my-8">
@@ -355,7 +424,9 @@ function Home() {
                                 scroll={scroll}
                                 cars={hybridCars}
                                 loading={loading}
-                                adType="feed"
+                                compareUrls={compareUrls}
+                                maxCompare={MAX_COMPARE_CARS}
+                                onToggleCompare={handleToggleCompare}
                             />
                             <CarSection
                                 title="Family Cars"
@@ -365,7 +436,9 @@ function Home() {
                                 scroll={scroll}
                                 cars={familyCars}
                                 loading={loading}
-                                adType="feed"
+                                compareUrls={compareUrls}
+                                maxCompare={MAX_COMPARE_CARS}
+                                onToggleCompare={handleToggleCompare}
                             />
                             <CarSection
                                 title="Sport Cars"
@@ -375,7 +448,9 @@ function Home() {
                                 scroll={scroll}
                                 cars={sportCars}
                                 loading={loading}
-                                adType="feed"
+                                compareUrls={compareUrls}
+                                maxCompare={MAX_COMPARE_CARS}
+                                onToggleCompare={handleToggleCompare}
                             />
                             {/* Bottom Banner Ad Placeholder (Desktop only) */}
                             <div className="hidden md:flex justify-center mt-12">
@@ -402,6 +477,43 @@ function Home() {
                 title="Featured Partner Offer"
                 description="Demo popup ad on mobile. Users can close and continue browsing."
             />
+
+            {compareNotice && (
+                <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 rounded-full bg-gray-900 text-white px-4 py-2 text-sm shadow-lg">
+                    {compareNotice}
+                </div>
+            )}
+
+            {compareCars.length > 0 && (
+                <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-8px_24px_rgba(15,23,42,0.08)]">
+                    <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+                        <div className="text-sm text-gray-700">
+                            Vertailussa <span className="font-semibold text-gray-900">{compareCars.length}</span> / {MAX_COMPARE_CARS} autoa
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleClearCompare}
+                                className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+                            >
+                                Tyhjennä
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleOpenCompare}
+                                disabled={compareCars.length < 2}
+                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                                    compareCars.length >= 2
+                                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                }`}
+                            >
+                                Vertaa nyt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Stats Section */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-10 sm:py-12 md:py-16">

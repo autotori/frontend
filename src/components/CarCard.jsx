@@ -1,4 +1,4 @@
-function CarCard({ car, source }) {
+function CarCard({ car, source, isCompared = false, canAddCompare = true, onToggleCompare }) {
     const formatPrice = (price) => {
         if (!price) return 'Price not available';
         return new Intl.NumberFormat('en-FI', {
@@ -40,6 +40,45 @@ function CarCard({ car, source }) {
     // Determine link
     const link = car.listingUrl || '#';
     const isExternal = car.listingUrl && car.listingUrl.startsWith('http');
+    const canCompare = Boolean(car.listingUrl);
+
+    const handleCompareClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!onToggleCompare || !canCompare) return;
+        onToggleCompare(car);
+    };
+
+    const footerContent = (car.location || canCompare) ? (
+        <div className="flex items-center justify-between gap-2 text-sm">
+            {car.location ? (
+                <div className="flex items-center gap-2 text-gray-600 min-w-0">
+                    <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="truncate">{car.location}</span>
+                </div>
+            ) : <span />}
+
+            {canCompare ? (
+                <button
+                    type="button"
+                    onClick={handleCompareClick}
+                    disabled={!isCompared && !canAddCompare}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-colors shrink-0 ${
+                        isCompared
+                            ? 'bg-green-600 text-white border-green-600'
+                            : canAddCompare
+                                ? 'bg-white text-blue-700 border-blue-200 hover:bg-blue-50'
+                                : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                        }`}
+                >
+                    {isCompared ? 'Lisätty' : canAddCompare ? 'Vertaa' : 'Täynnä'}
+                </button>
+            ) : null}
+        </div>
+    ) : null;
 
     const cardContent = (
         <>
@@ -73,8 +112,7 @@ function CarCard({ car, source }) {
                     </div>
                 </div>
             </div>
-            <div className="p-3 sm:p-4 md:p-6 flex flex-col justify-between h-[220px] sm:h-[240px] md:h-[260px]">
-                <div>
+            <div className="p-3 sm:p-4 md:p-6 h-[220px] sm:h-[240px] md:h-[260px]">
                     <h4 className="text-sm sm:text-base md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 min-h-[40px] sm:min-h-[48px] md:min-h-[56px]">
                         {title}
                     </h4>
@@ -121,36 +159,38 @@ function CarCard({ car, source }) {
                             </div>
                         )}
                     </div>
-                </div>
-                {car.location && (
-                    <div className="flex items-center gap-2 text-gray-600 text-sm mt-3 pt-3 border-t border-gray-100">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>{car.location}</span>
-                    </div>
-                )}
             </div>
         </>
     );
 
     if (isExternal) {
         return (
-            <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-gray-100 hover:border-blue-200"
-            >
-                {cardContent}
-            </a>
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
+                <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block group cursor-pointer"
+                >
+                    {cardContent}
+                </a>
+                {footerContent ? (
+                    <div className="px-3 sm:px-4 md:px-6 pb-3 sm:pb-4 md:pb-6 pt-3 border-t border-gray-100">
+                        {footerContent}
+                    </div>
+                ) : null}
+            </div>
         );
     }
 
     return (
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-gray-100 hover:border-blue-200 min-h-[420px]">
             {cardContent}
+            {footerContent ? (
+                <div className="px-3 sm:px-4 md:px-6 pb-3 sm:pb-4 md:pb-6 pt-3 border-t border-gray-100">
+                    {footerContent}
+                </div>
+            ) : null}
         </div>
     );
 }
