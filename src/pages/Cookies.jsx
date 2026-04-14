@@ -69,7 +69,7 @@ function Cookies({ embedded = false }) {
             </section>
 
             <section>
-              <h2 className="font-semibold text-gray-900 mb-1">8. Yhteystiedot</h2>
+              <h2 className="font-semibold text-gray-900 mb-1">8. Ota yhteyttä</h2>
               <p>
                 Jos käyttäjällä on kysyttävää evästeiden käytöstä, hän voi ottaa yhteyttä: Wasala Oy,
                 paavo.vasala@wasala.fi, Vasantie 43, 90310 Oulu, puhelin 0500586737.

@@ -11,9 +11,7 @@ function About() {
                     <div className="prose max-w-none">
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Missiomme</h3>
                         <p className="text-gray-700 mb-6">
-                            Autotori on kattava autojen hakualusta, joka on suunniteltu helpottamaan autonostokokemustasi Suomessa. Keräämme ja yhtenäistämme ilmoituksia useista luotettavista lähteistä, jolloin pääset tutustumaan tuhansiin autoihin yhdellä kätevällä sivustolla.
-                            experience in Finland. We collect and normalize listings from multiple trusted sources,
-                            giving you access to thousands of cars in one convenient location.
+                            Autotori.fi haluaa auttaa auton ostajaa löytämään itselleen parhaan mahdollisen auton suuresta valikoimasta siten, että auton etsiminen on helppoa, luotettavaa ja käyttäjäystävällistä. Auton myyjiä Autotori.fi auttaa saavuttamaan korkean asiakastyytyväisyyden, kun auton ostaja löytää itselleen mieluisimman ja sopivimman auton. Autotori.fi kehittää jatkuvasti uusia työkaluja edistämään autokauppaa.
                         </p>
 
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Tärkeimmät ominaisuudet</h3>
@@ -69,7 +67,7 @@ function About() {
                             <li>Ilmoitukset poistetaan automaattisesti poistopyyntöjen perusteella</li>
                         </ul>
 
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">Yhteystiedot & tuki</h3>
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">Ota yhteyttä & tuki</h3>
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                             <p className="text-gray-700 mb-2">
                                 Onko sinulla kysymyksiä tai palautetta? Otamme mielellämme vastaan palautetta!
