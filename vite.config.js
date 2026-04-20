@@ -8,7 +8,7 @@ export default defineConfig({
     allowedHosts: ['.ngrok-free.dev', '.trycloudflare.com'],
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://backend-uenk.onrender.com',
         changeOrigin: true
       }
     }

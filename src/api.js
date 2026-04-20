@@ -1,8 +1,8 @@
-const API_BASE = '/api';
+const API_BASE = import.meta?.env?.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api` : '/api';
 
 export async function searchCars(params) {
   const queryString = new URLSearchParams();
-  
+
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
       queryString.append(key, value);
