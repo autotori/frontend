@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter, HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LegalModal from './components/LegalModal';
 import CookieConsentBanner from './components/CookieConsentBanner';
@@ -13,9 +13,6 @@ import AdvertisementPlacements from './pages/AdvertisementPlacements';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Cookies from './pages/Cookies';
-
-const useHashRouter = String(import.meta.env.VITE_USE_HASH_ROUTER || '').toLowerCase() === 'true';
-const Router = useHashRouter ? HashRouter : BrowserRouter;
 
 function App() {
   const [legalDialog, setLegalDialog] = useState(null);
